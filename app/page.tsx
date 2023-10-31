@@ -4,8 +4,8 @@ import StyledLink from './components/buttons/StyledLinks';
 export default function Home() {
   return (
     <main>
-      <section>
-        <div className='flex lg:p-10 bg-background_LM dark:bg-background_DM lg:space-x-5 h-full text-text_LM'>
+      <section className='h-full'>
+        <div className='flex lg:p-10 lg:space-x-5 h-full'>
           <div className='hidden lg:block relative w-1/2 rounded-lg overflow-hidden'>
             <LandingImage src={'/landingpage-image.jpg'} />
           </div>
