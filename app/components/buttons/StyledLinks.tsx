@@ -1,14 +1,6 @@
 import clsx from 'clsx';
 import Link from 'next/link';
-
-interface StyledLinkProps {
-  src: string;
-  children: string;
-  primary?: boolean;
-  secondary?: boolean;
-  accent?: boolean;
-  fullWidth?: boolean;
-}
+import { StyledLinkProps } from '@/typings';
 
 const StyledLink: React.FC<StyledLinkProps> = ({
   src,
