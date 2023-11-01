@@ -16,3 +16,9 @@ export interface StyledLinkProps {
   accent?: boolean;
   fullWidth?: boolean;
 }
+
+export interface TaskData {
+  title: string;
+  body: string;
+  date: string;
+}
