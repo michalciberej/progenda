@@ -1,20 +1,18 @@
 'use client';
 
-import prisma from '@/app/lib/prismadb';
-import Link from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
-import { BsListCheck } from 'react-icons/bs';
-import { FaStickyNote } from 'react-icons/fa';
-import { usePathname } from 'next/navigation';
 import { IoMdSettings } from 'react-icons/io';
 import { GoSignOut } from 'react-icons/go';
 import { signOut } from 'next-auth/react';
-import clsx from 'clsx';
-import Image from 'next/image';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { Task, User } from '@prisma/client';
+import Avatar from '../Avatar';
+import Tasks from './Tasks';
 
-const SidebarMenu = () => {
-  const pathname = usePathname().split('/').pop();
+const SidebarMenu = ({ user, tasks }: { user: User; tasks: Task[] }) => {
+  const [isOpened, setIsOpened] = useState(true);
+  const session = useSession();
 
   return (
     <aside className='hidden lg:flex flex-col space-y-8 w-full md:max-w-[20rem] h-full bg-secondary_LM p-4 rounded-xl divide-y divide-background_DM/10'>
@@ -28,89 +26,14 @@ const SidebarMenu = () => {
           </button>
         </div>
       </section>
-      <section>
-        <div className='flex flex-col py-4'>
-          <h2 className='font-semibold mb-1'>Tasks</h2>
-          <ul className='flex flex-col space-y-2'>
-            <li
-              className={clsx(
-                `flex items-center justify-between rounded-lg py-2 px-2`,
-                pathname === 'upcoming' && 'bg-background_DM/20'
-              )}>
-              <Link
-                href={'/users/upcoming'}
-                className={`flex items-center gap-2 ${
-                  pathname === 'upcoming' && 'font-semibold'
-                }`}>
-                <MdKeyboardDoubleArrowRight className='text-xl' />
-                Upcoming
-              </Link>
-              <span
-                className={clsx(
-                  `px-1 rounded-sm mr-1`,
-                  pathname === 'upcoming'
-                    ? 'bg-secondary_LM'
-                    : 'bg-secondary_DM/20'
-                )}>
-                12
-              </span>
-            </li>
-            <li
-              className={clsx(
-                `flex items-center justify-between rounded-lg py-2 px-2`,
-                pathname === 'today' && 'bg-background_DM/20'
-              )}>
-              <Link
-                href={'/users/today'}
-                className={`flex items-center gap-2 ${
-                  pathname === 'today' && 'font-semibold'
-                }`}>
-                <BsListCheck className='text-xl' />
-                Today
-              </Link>
-              <span
-                className={clsx(
-                  `px-1 rounded-sm mr-1`,
-                  pathname === 'today'
-                    ? 'bg-secondary_LM'
-                    : 'bg-secondary_DM/20'
-                )}>
-                12
-              </span>
-            </li>
-            <li
-              className={clsx(
-                `flex items-center justify-between rounded-lg py-2 px-2`,
-                pathname === 'sticky-wall' && 'bg-background_DM/20'
-              )}>
-              <Link
-                href={'/users/sticky-wall'}
-                className={`flex items-center gap-2 ${
-                  pathname === 'sticky-wall' && 'font-semibold'
-                }`}>
-                <FaStickyNote className='text-xl' />
-                sticky-wall
-              </Link>
-              <span
-                className={clsx(
-                  `px-1 rounded-sm mr-1`,
-                  pathname === 'sticky-wall'
-                    ? 'bg-secondary_LM'
-                    : 'bg-secondary_DM/20'
-                )}>
-                12
-              </span>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <Tasks tasks={tasks} />
       <section>
         <div className='flex flex-col py-4'>
           <h2 className='font-semibold'>Lists</h2>
         </div>
       </section>
       <section>
-        <div className='flex pt-4 justify-between items-center '>
+        <div className='flex pt-4 justify-between items-center'>
           <div className='flex flex-col space-y-2'>
             <button
               type='button'
@@ -126,14 +49,7 @@ const SidebarMenu = () => {
               Sign out
             </button>
           </div>
-          <Image
-            src={'/#'}
-            alt={''}
-            width={50}
-            height={50}
-            priority
-            className='object-cover h-full rounded-full'
-          />
+          <Avatar user={user} />
         </div>
       </section>
     </aside>
