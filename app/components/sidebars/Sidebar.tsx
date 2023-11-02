@@ -1,8 +1,8 @@
 import getUser from '@/app/actions/getUser';
 import getTasks from '@/app/actions/getTasks';
 
-import SidebarMenu from './SidebarMenu';
-import SidebarTask from './SidebarTask';
+import MenuSidebar from './MenuSidebar';
+import TaskSidebar from './TaskSidebar';
 
 async function Sidebar({ children }: { children: React.ReactNode }) {
   const user = await getUser();
@@ -10,12 +10,12 @@ async function Sidebar({ children }: { children: React.ReactNode }) {
 
   return (
     <div className='h-full flex space-x-4'>
-      <SidebarMenu
+      <MenuSidebar
         user={user}
         tasks={tasks}
       />
       <main className='w-full'>{children}</main>
-      <SidebarTask />
+      <TaskSidebar />
     </div>
   );
 }
