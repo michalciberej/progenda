@@ -22,3 +22,5 @@ export interface TaskData {
   body: string;
   date: string;
 }
+
+export type Variant = 'upcoming' | 'today' | 'total';
