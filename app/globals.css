@@ -13,3 +13,7 @@ body,
 main {
   height: 100%;
 }
+
+ul::-webkit-scrollbar {
+  width: 0px;
+}
