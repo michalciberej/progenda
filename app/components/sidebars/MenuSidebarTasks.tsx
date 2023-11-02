@@ -9,44 +9,56 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import getTaskAmount from '@/app/lib/getTaskAmount';
 
-const Tasks = ({ tasks }: { tasks: Task[] }) => {
+const MenuSidebarTasks = ({
+  tasks,
+  isMenuOpened,
+}: {
+  tasks: Task[];
+  isMenuOpened: boolean;
+}) => {
   const pathname = usePathname().split('/').pop();
   const upcomingTasks = getTaskAmount(tasks, 'upcoming') || 0;
   const todayTasks = getTaskAmount(tasks, 'today');
 
+  const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
+  const center = isMenuOpened ? 'justify-between' : 'justify-center';
+
   return (
     <section>
       <div className='flex flex-col py-4'>
-        <h2 className='font-semibold mb-1'>Tasks</h2>
+        <h2 className={`font-semibold mb-1 ${hiddenOrShown}`}>Tasks</h2>
         <nav>
           <ul className='flex flex-col space-y-2'>
             <li
               className={clsx(
-                `flex items-center justify-between rounded-lg py-2 px-2`,
-                pathname === 'upcoming' && 'bg-background_DM/20'
+                `flex items-center rounded-lg py-2 px-2`,
+                pathname === 'upcoming' && 'bg-background_DM/20',
+                center
               )}>
               <Link
                 href={'/users/upcoming'}
-                className={`flex items-center gap-2 ${
+                className={`flex items-center space-x-2 ${
                   pathname === 'upcoming' && 'font-semibold'
                 }`}>
                 <MdKeyboardDoubleArrowRight className='text-xl' />
-                Upcoming
+                <span className={hiddenOrShown}>Upcoming</span>
               </Link>
               <span
                 className={clsx(
                   `px-1 rounded-sm mr-1`,
                   pathname === 'upcoming'
                     ? 'bg-secondary_LM'
-                    : 'bg-secondary_DM/20'
+                    : 'bg-secondary_DM/20',
+                  hiddenOrShown
                 )}>
                 {upcomingTasks}
               </span>
             </li>
             <li
               className={clsx(
-                `flex items-center justify-between rounded-lg py-2 px-2`,
-                pathname === 'today' && 'bg-background_DM/20'
+                `flex items-center rounded-lg py-2 px-2`,
+                pathname === 'today' && 'bg-background_DM/20',
+                center
               )}>
               <Link
                 href={'/users/today'}
@@ -54,22 +66,24 @@ const Tasks = ({ tasks }: { tasks: Task[] }) => {
                   pathname === 'today' && 'font-semibold'
                 }`}>
                 <BsListCheck className='text-xl' />
-                Today
+                <span className={hiddenOrShown}>Today</span>
               </Link>
               <span
                 className={clsx(
                   `px-1 rounded-sm mr-1`,
                   pathname === 'today'
                     ? 'bg-secondary_LM'
-                    : 'bg-secondary_DM/20'
+                    : 'bg-secondary_DM/20',
+                  hiddenOrShown
                 )}>
                 {todayTasks}
               </span>
             </li>
             <li
               className={clsx(
-                `flex items-center justify-between rounded-lg py-2 px-2`,
-                pathname === 'sticky-wall' && 'bg-background_DM/20'
+                `flex items-center rounded-lg py-2 px-2`,
+                pathname === 'sticky-wall' && 'bg-background_DM/20',
+                center
               )}>
               <Link
                 href={'/users/sticky-wall'}
@@ -77,7 +91,7 @@ const Tasks = ({ tasks }: { tasks: Task[] }) => {
                   pathname === 'sticky-wall' && 'font-semibold'
                 }`}>
                 <FaStickyNote className='text-xl' />
-                sticky-wall
+                <span className={hiddenOrShown}>Upcoming</span>
               </Link>
             </li>
           </ul>
@@ -87,4 +101,4 @@ const Tasks = ({ tasks }: { tasks: Task[] }) => {
   );
 };
 
-export default Tasks;
+export default MenuSidebarTasks;
