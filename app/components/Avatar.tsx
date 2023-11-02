@@ -14,7 +14,7 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
       width={50}
       height={50}
       priority
-      className='object-cover h-full rounded-full'
+      className='object-cover h-full rounded-full transition-all'
     />
   );
 };
