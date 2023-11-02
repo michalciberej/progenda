@@ -1,7 +1,6 @@
 import { Task } from '@prisma/client';
 import getCurrentDate from './getCurrentDate';
-
-type Variant = 'upcoming' | 'today' | 'total';
+import { Variant } from '@/typings';
 
 const getTaskAmount = (tasks: Task[], variant: Variant) => {
   if (variant === 'upcoming') {
