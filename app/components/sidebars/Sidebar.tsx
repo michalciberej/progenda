@@ -9,7 +9,16 @@ async function Sidebar({ children }: { children: React.ReactNode }) {
   const tasks = await getTasks();
 
   return (
-    <div className='h-full flex space-x-4'>
+    <div
+      className='
+      h-full
+      p-4
+      flex
+      lg:space-x-4
+      bg-background_LM
+      dark:bg-background_DM/90 
+      text-text_LM
+      dark:text-text_DM'>
       <MenuSidebar
         user={user}
         tasks={tasks}

@@ -12,7 +12,7 @@ const MenuSidebarLists = ({
   return (
     <section>
       <div className='flex flex-col py-4'>
-        <h2 className={`font-semibold mb-1 ${hiddenOrShown}`}>Tasks</h2>
+        <h2 className={`font-semibold mb-1 ${hiddenOrShown}`}>Lists</h2>
       </div>
     </section>
   );
