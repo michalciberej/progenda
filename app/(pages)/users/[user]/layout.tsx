@@ -1,5 +1,6 @@
 import Sidebar from '@/app/components/sidebars/Sidebar';
 import SidebarContextProvider from '@/app/context/SidebarContext';
+import ThemeContextProvider from '@/app/context/ThemeContext';
 
 export default function UsersLayout({
   children,
@@ -7,8 +8,10 @@ export default function UsersLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarContextProvider>
-      <Sidebar>{children}</Sidebar>
-    </SidebarContextProvider>
+    <ThemeContextProvider>
+      <SidebarContextProvider>
+        <Sidebar>{children}</Sidebar>
+      </SidebarContextProvider>
+    </ThemeContextProvider>
   );
 }

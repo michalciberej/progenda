@@ -19,10 +19,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={clsx(
-          poppins.className,
-          'bg-background_LM dark:bg-background_DM text-text_LM dark:text-text_DM p-4'
-        )}>
+        className={clsx(poppins.className, 'bg-background_LM text-text_LM')}>
         <AuthContext>
           <ToasterContext />
           {children}
