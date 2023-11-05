@@ -1,6 +1,4 @@
-import { signOut } from 'next-auth/react';
-
-const UsersPage = () => {
+const UserPage = () => {
   return (
     <main className='lg:pl-80 border rounded-xl w-full'>
       <section></section>
@@ -8,4 +6,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage;
+export default UserPage;
