@@ -25,9 +25,9 @@ const SingInForm = () => {
 
   useEffect(() => {
     if (session?.status === 'authenticated') {
-      router.push('/users/');
+      router.push(`/user`);
     }
-  }, [session?.status, session.data?.user?.name, router]);
+  }, [session?.status, router]);
 
   const toggleVariant = () => {
     if (variant === 'LOGIN') setVariant('REGISTER');
@@ -43,7 +43,7 @@ const SingInForm = () => {
           if (callback?.error) toast.error('invalid credentials');
           if (!callback?.error && callback?.ok) {
             toast.success('Logged in!');
-            router.push(`/users/}`);
+            router.push(`/user`);
           }
         })
         .finally(() => {
@@ -73,7 +73,7 @@ const SingInForm = () => {
         }
         if (!callback?.error && callback?.ok) {
           toast.success('Logged in!');
-          router.push('/users/');
+          router.push(`/user`);
         }
       })
       .finally(() => setIsLoading(false));
