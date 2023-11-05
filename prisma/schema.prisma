@@ -47,13 +47,16 @@ model Account {
 model Task {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title String
-  body String?
-  date String?
+  body String
+  date String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  
   userId String @db.ObjectId
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  listId String @db.ObjectId
+  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
 }
 
 model List {
@@ -63,4 +66,6 @@ model List {
 
   userId String @db.ObjectId
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  task Task[]
 }
