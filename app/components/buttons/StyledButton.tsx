@@ -19,6 +19,7 @@ const StyledButton: React.FC<StyledButtonProps> = ({
         justify-center
         items-center
         py-2
+        px-2
         outline-none
         ring-2
         ring-inset
