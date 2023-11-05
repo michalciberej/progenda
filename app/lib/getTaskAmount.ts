@@ -3,7 +3,7 @@ import getCurrentDate from './getCurrentDate';
 import { Variant } from '@/typings';
 
 const getTaskAmount = (tasks: Task[], variant: Variant) => {
-  if (variant === 'upcoming') {
+  if (variant === 'total') {
     return tasks.length;
   }
 
