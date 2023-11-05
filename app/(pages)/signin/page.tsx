@@ -5,7 +5,7 @@ export default function SignInPage() {
   return (
     <main>
       <section className='h-full'>
-        <div className='flex lg:p-10lg:space-x-5 h-full'>
+        <div className='flex lg:p-10 lg:space-x-5 h-full'>
           <div className='hidden lg:block relative w-1/2 rounded-lg overflow-hidden'>
             <LandingImage src={'/signinpage-image.png'} />
           </div>

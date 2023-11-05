@@ -18,7 +18,7 @@ export default function Home() {
                 <h2 className='lg:text-2xl xl:text-4xl font-semibold'>
                   Productive Mind
                 </h2>
-                <p className='xl:text-2xl'>
+                <p>
                   With only features you need, Progenda is customized for
                   individuals seeking stress-free way to stay focused on their
                   goals, projects and tasks.
