@@ -1,15 +1,24 @@
 'use client';
 
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { Task, User } from '@prisma/client';
+import { List, Task, User } from '@prisma/client';
 import { useSidebarContext } from '@/app/context/SidebarContext';
 import clsx from 'clsx';
 
 import MenuSidebarTasks from './MenuSidebarTasks';
 import MenuSidebarLists from './MenuSidebarLists';
 import MenuSidebarFooter from './MenuSidebarFooter';
+import { ListWithTaskCount } from '@/typings';
 
-const MenuSidebar = ({ user, tasks }: { user: User; tasks: Task[] }) => {
+const MenuSidebar = ({
+  user,
+  tasks,
+  lists,
+}: {
+  user: User;
+  tasks: Task[];
+  lists: ListWithTaskCount[];
+}) => {
   const { isMenuOpened, setIsMenuOpened } = useSidebarContext();
 
   return (
@@ -21,7 +30,6 @@ const MenuSidebar = ({ user, tasks }: { user: User; tasks: Task[] }) => {
       flex-col
       w-full
       h-full
-      justify-between
       p-4
       rounded-xl
       divide-y
@@ -30,7 +38,7 @@ const MenuSidebar = ({ user, tasks }: { user: User; tasks: Task[] }) => {
       bg-secondary_LM
       dark:bg-secondary_DM
       `,
-        isMenuOpened ? 'lg:w-80 space-y-8 ' : 'lg:w-14'
+        isMenuOpened ? 'lg:w-80' : 'lg:w-14'
       )}>
       <section>
         <div className='flex justify-between items-center pb-4'>
@@ -48,7 +56,10 @@ const MenuSidebar = ({ user, tasks }: { user: User; tasks: Task[] }) => {
         tasks={tasks}
         isMenuOpened={isMenuOpened}
       />
-      <MenuSidebarLists isMenuOpened={isMenuOpened} />
+      <MenuSidebarLists
+        lists={lists}
+        isMenuOpened={isMenuOpened}
+      />
       <MenuSidebarFooter
         user={user}
         isMenuOpened={isMenuOpened}

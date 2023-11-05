@@ -3,10 +3,12 @@ import getTasks from '@/app/actions/getTasks';
 
 import MenuSidebar from './MenuSidebar';
 import TaskSidebar from './TaskSidebar';
+import getLists from '@/app/actions/getLists';
 
 async function Sidebar({ children }: { children: React.ReactNode }) {
-  const user = await getUser();
+  const user: any = await getUser();
   const tasks = await getTasks();
+  const lists = await getLists();
 
   return (
     <div
@@ -22,9 +24,10 @@ async function Sidebar({ children }: { children: React.ReactNode }) {
       <MenuSidebar
         user={user}
         tasks={tasks}
+        lists={lists}
       />
       <main className='w-full'>{children}</main>
-      <TaskSidebar />
+      <TaskSidebar lists={lists} />
     </div>
   );
 }
