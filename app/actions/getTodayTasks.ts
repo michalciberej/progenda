@@ -25,6 +25,7 @@ const getTodayTasks = async () => {
           equals: today,
         },
       },
+      include: { list: true },
     });
 
     return tasks;

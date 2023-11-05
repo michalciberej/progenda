@@ -26,6 +26,7 @@ const getThisWeekTasks = async () => {
           gte: today,
         },
       },
+      include: { list: true },
     });
 
     return tasks;
