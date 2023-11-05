@@ -17,3 +17,8 @@ main {
 ul::-webkit-scrollbar {
   width: 0px;
 }
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  margin-left: -15px;
+  color-scheme: dark;
+}
