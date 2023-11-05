@@ -20,4 +20,4 @@ const getUser = async () => {
   }
 };
 
-export default getUser
+export default getUser;

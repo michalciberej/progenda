@@ -1,7 +1,7 @@
 import prisma from '@/app/lib/prismadb';
 import getUser from './getUser';
 
-const getTasks = async () => {
+const getLists = async () => {
   const user = await getUser();
 
   if (!user?.id) {
@@ -9,10 +9,7 @@ const getTasks = async () => {
   }
 
   try {
-    const tasks = await prisma.task.findMany({
-      orderBy: {
-        createdAt: 'asc',
-      },
+    const lists = await prisma.list.findMany({
       where: {
         user: {
           is: {
@@ -20,13 +17,19 @@ const getTasks = async () => {
           },
         },
       },
-      include: { list: true },
+      include: {
+        _count: {
+          select: {
+            task: true,
+          },
+        },
+      },
     });
 
-    return tasks;
+    return lists;
   } catch (error: any) {
     return [];
   }
 };
 
-export default getTasks;
+export default getLists;
