@@ -1,10 +1,26 @@
 'use client';
 
-import { Task } from '@prisma/client';
 import { AiOutlineRight } from 'react-icons/ai';
 import { BsCalendar3 } from 'react-icons/bs';
+import { useSidebarContext } from '../context/SidebarContext';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { TaskWithList } from '@/typings';
 
-const TaskListElement = ({ task }: { task: Task }) => {
+const TaskListElement = ({ task }: { task: TaskWithList }) => {
+  const { setTaskToUpdate, isTaskOpened, setIsTaskOpened, setTaskVariant } =
+    useSidebarContext();
+  const router = useRouter();
+
+  const handleTaskComplete = () => {
+    axios
+      .post('/api/deleteTask', task)
+      .then(() => toast.success('Task completed!'))
+      .catch(() => toast.error('Something went wrong'))
+      .finally(() => router.refresh());
+  };
+
   return (
     <li className='w-full p-3 flex justify-between'>
       <div
@@ -16,7 +32,10 @@ const TaskListElement = ({ task }: { task: Task }) => {
       dark:divide-background_LM/10
       '>
         <div className='flex items-center space-x-4'>
-          <input type='checkbox' />
+          <input
+            type='checkbox'
+            onChange={handleTaskComplete}
+          />
           <span className='text-lg'>{task.title}</span>
         </div>
         {task.date && (
@@ -25,10 +44,30 @@ const TaskListElement = ({ task }: { task: Task }) => {
             <span>{task.date}</span>
           </div>
         )}
-        
+        {task.list && (
+          <div className='flex items-center px-10 space-x-3'>
+            <div
+              className='w-5 h-5 rounded-sm'
+              style={{ backgroundColor: task.list.color }}
+            />
+            <span>{task.list.title}</span>
+          </div>
+        )}
       </div>
       <button
         type='button'
+        aria-label='Update task'
+        onClick={() => {
+          setTaskVariant('UPDATE');
+          setTaskToUpdate({
+            title: task.title,
+            body: task.body,
+            date: task.date,
+            id: task.id,
+            list: task.list,
+          });
+          setIsTaskOpened(!isTaskOpened);
+        }}
         className='
         text-text_LM/50
         hover:text-text_LM
