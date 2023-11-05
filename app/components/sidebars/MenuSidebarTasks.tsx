@@ -17,7 +17,7 @@ const MenuSidebarTasks = ({
   isMenuOpened: boolean;
 }) => {
   const pathname = usePathname().split('/').pop();
-  const upcomingTasks = getTaskAmount(tasks, 'upcoming') || 0;
+  const upcomingTasks = getTaskAmount(tasks, 'total') || 0;
   const todayTasks = getTaskAmount(tasks, 'today');
 
   const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
@@ -37,7 +37,7 @@ const MenuSidebarTasks = ({
                 center
               )}>
               <Link
-                href={'/users/upcoming'}
+                href={'/user/upcoming'}
                 className={`flex items-center space-x-2 ${
                   pathname === 'upcoming' && 'font-semibold'
                 }`}>
@@ -62,7 +62,7 @@ const MenuSidebarTasks = ({
                 center
               )}>
               <Link
-                href={'/users/today'}
+                href={'/user/today'}
                 className={`flex items-center gap-2 ${
                   pathname === 'today' && 'font-semibold'
                 }`}>
@@ -87,12 +87,12 @@ const MenuSidebarTasks = ({
                 center
               )}>
               <Link
-                href={'/users/sticky-wall'}
+                href={'/user/sticky-wall'}
                 className={`flex items-center gap-2 ${
                   pathname === 'sticky-wall' && 'font-semibold'
                 }`}>
                 <FaStickyNote className='text-xl' />
-                <span className={hiddenOrShown}>Upcoming</span>
+                <span className={hiddenOrShown}>Sticky Wall</span>
               </Link>
             </li>
           </ul>

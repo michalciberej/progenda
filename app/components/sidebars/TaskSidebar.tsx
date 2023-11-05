@@ -10,28 +10,82 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import clsx from 'clsx';
 import StyledButton from '../buttons/StyledButton';
+import { List } from '@prisma/client';
 
-const TaskSidebar = () => {
+const TaskSidebar = ({ lists }: { lists: List[] }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const {
+    taskToUpdate,
+    setTaskToUpdate,
+    isTaskOpened,
+    setIsTaskOpened,
+    taskVariant,
+    setTaskVariant,
+  } = useSidebarContext();
   const { register, handleSubmit } = useForm<TaskData>({
-    defaultValues: { title: '', body: '', date: '' },
+    defaultValues: {
+      title: '',
+      body: '',
+      date: '',
+      list: '',
+    },
+    values: {
+      title: taskToUpdate.title,
+      body: taskToUpdate.body,
+      date: taskToUpdate.date,
+      list: taskToUpdate.list?.title,
+    },
   });
-  const { isTaskOpened, setIsTaskOpened } = useSidebarContext();
   const router = useRouter();
 
   const onSubmit: SubmitHandler<TaskData> = (taskData) => {
     setIsLoading(true);
 
-    axios
-      .post('/api/createTask', taskData)
-      .then(() => {
-        toast.success('Succes!');
-      })
-      .catch(() => toast.error('Something went wrong!'))
-      .finally(() => {
-        setIsLoading(false);
-        router.refresh();
-      });
+    if (taskVariant === 'CREATE') {
+      axios
+        .post('/api/createTask', {
+          ...taskData,
+          id: taskToUpdate.id,
+          list: taskData.list,
+        })
+        .then(() => {
+          toast.success('Task created!');
+          setIsTaskOpened(false);
+          setTaskToUpdate({
+            title: '',
+            body: '',
+            date: '',
+            id: '',
+            list: { title: '', color: '', id: '', userId: '' },
+          });
+          router.refresh();
+        })
+        .catch(() => toast.error('Something went wrong!'))
+        .finally(() => setIsLoading(false));
+    }
+
+    if (taskVariant === 'UPDATE') {
+      axios
+        .post('/api/updateTask', {
+          ...taskData,
+          id: taskToUpdate.id,
+          list: taskData.list,
+        })
+        .then(() => {
+          toast.success('Task updated!');
+          setIsTaskOpened(false);
+          setTaskToUpdate({
+            title: '',
+            body: '',
+            date: '',
+            id: '',
+            list: { title: '', color: '', id: '', userId: '' },
+          });
+          router.refresh();
+        })
+        .catch(() => toast.error('Something went wrong!'))
+        .finally(() => setIsLoading(false));
+    }
   };
 
   return (
@@ -41,51 +95,108 @@ const TaskSidebar = () => {
         isTaskOpened ? 'lg:flex' : 'lg:hidden'
       )}>
       <div className='w-full flex justify-between '>
-        <h1 className='text-2xl font-semibold'>Create Task</h1>
+        <h1 className='text-2xl font-semibold'>
+          {taskVariant === 'CREATE' ? 'Create Task' : 'Update Task'}
+        </h1>
         <button
           type='button'
-          onClick={() => setIsTaskOpened(!isTaskOpened)}
+          onClick={() => {
+            setTaskVariant('CREATE');
+            setIsTaskOpened(!isTaskOpened);
+            setTaskToUpdate({
+              title: '',
+              body: '',
+              date: '',
+              id: '',
+              list: { title: '', color: '', id: '', userId: '' },
+            });
+          }}
           className='text-2xl'>
           <AiOutlineClose />
         </button>
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='w-full space-y-4 flex flex-col justify-between  h-full'>
+        className='w-full  flex flex-col justify-between h-full'>
         <div className='flex flex-col space-y-4'>
           <input
             type='text'
             placeholder='Title *'
-            className='w-full bg-transparent border p-2 rounded-lg'
+            defaultValue={taskToUpdate.title}
+            className='w-full bg-transparent border-2 dark:border-background_LM/20 p-2 rounded-lg'
             {...register('title', { required: true })}
           />
           <textarea
             placeholder='Description'
-            className='w-full h-full bg-transparent max-h-[8rem] border p-2 rounded-lg'
+            defaultValue={taskToUpdate.body}
+            className='w-full h-full bg-transparent max-h-[8rem] border-2 dark:border-background_LM/20 p-2 rounded-lg resize-none'
             {...register('body', { maxLength: 50 })}
           />
-          <label htmlFor='date'>
+          <label
+            htmlFor='date'
+            className='flex items-center'>
             Date
             <input
               type='date'
               id='date'
+              className='bg-transparent ml-2 border-2 dark:border-background_LM/20 rounded-md py-1 px-2'
               {...register('date')}
             />
           </label>
+          <label
+            htmlFor='list'
+            className='flex items-center'>
+            List
+            <select
+              id='list'
+              {...register('list')}
+              className='bg-transparent border-2 dark:border-background_LM/20 rounded-md py-1 px-2 ml-5'>
+              {lists.map((list, index) => (
+                <option
+                  key={index}
+                  value={list.id}
+                  style={{ backgroundColor: list.color }}>
+                  {list.title}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
-        <div className='w-full flex space-x-4'>
-          <StyledButton
-            secondary
-            fullWidth>
-            Delete
-          </StyledButton>
-          <StyledButton
-            primary
-            fullWidth>
-            Create
-          </StyledButton>
-        </div>
+        <StyledButton
+          disabled={isLoading}
+          primary
+          fullWidth>
+          {taskVariant === 'CREATE' ? 'Create' : 'Update'}
+        </StyledButton>
       </form>
+      {taskVariant === 'UPDATE' && (
+        <StyledButton
+          func={() => {
+            console.log(taskToUpdate);
+            axios
+              .post('/api/deleteTask', taskToUpdate)
+              .then(() => {
+                toast.success('Task deleted!');
+                setIsTaskOpened(false);
+                setTaskToUpdate({
+                  title: '',
+                  body: '',
+                  date: '',
+                  id: '',
+                  list: { title: '', color: '', id: '', userId: '' },
+                });
+                setTaskVariant('CREATE');
+                router.refresh();
+              })
+              .catch(() => toast.error('Something went wrong!'))
+              .finally(() => setIsLoading(false));
+          }}
+          disabled={isLoading}
+          secondary
+          fullWidth>
+          Delete
+        </StyledButton>
+      )}
     </aside>
   );
 };

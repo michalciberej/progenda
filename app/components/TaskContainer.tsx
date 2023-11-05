@@ -5,7 +5,6 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { useSidebarContext } from '../context/SidebarContext';
 import TaskListElement from './TaskListElement';
 import clsx from 'clsx';
-import filterTasks from '../lib/filterTasks';
 import EmptyState from './EmptyState';
 
 interface TaskContainerProps {
@@ -47,10 +46,10 @@ const TaskContainer: React.FC<TaskContainerProps> = ({
           text-2xl
           rounded-full
           text-white
-          bg-background_DM/50
-          dark:bg-background_LM/50
-          hover:bg-background_DM
-          dark:hover:bg-background_LM'>
+          bg-secondary_LM/50
+          dark:bg-secondary_DM/50
+          hover:bg-secondary_LM
+          dark:hover:bg-secondary_DM'>
           <AiOutlinePlus />
         </button>
       </div>
