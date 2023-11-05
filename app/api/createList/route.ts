@@ -1,12 +1,12 @@
 import prisma from '@/app/lib/prismadb';
 import getUser from '@/app/actions/getUser';
-import { TaskData } from '@/typings';
+import { ListData } from '@/typings';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   const user = await getUser();
-  const formData: TaskData = await request.json();
-  const { title, body, date, list } = formData;
+  const listData: ListData = await request.json();
+  const { title, color } = listData;
 
   if (!title) {
     return new NextResponse('Invalid data', { status: 400 });
@@ -16,19 +16,13 @@ export async function POST(request: Request) {
     return new NextResponse('Unauthorized', { status: 400 });
   }
 
-  const task = await prisma.task.create({
+  const task = await prisma.list.create({
     data: {
       title,
-      body,
-      date,
+      color,
       user: {
         connect: {
           id: user.id,
-        },
-      },
-      list: {
-        connect: {
-          id: list,
         },
       },
     },
