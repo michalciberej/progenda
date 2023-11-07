@@ -1,5 +1,6 @@
 import getTodayTasks from '@/app/actions/getTodayTasks';
 import TaskContainer from '@/app/components/TaskContainer';
+import TaskListElement from '@/app/components/TaskListElement';
 
 const TodayPage = async () => {
   const todayTasks = await getTodayTasks();
@@ -10,11 +11,14 @@ const TodayPage = async () => {
         <h1 className='text-5xl relative z-10 my-4'>Today</h1>
       </section>
       <div className='overflow-auto flex flex-col space-y-6'>
-        <TaskContainer
-          title='Today'
-          tasks={todayTasks}
-          span
-        />
+        <ul>
+          {todayTasks.map((task, index) => (
+            <TaskListElement
+              key={index}
+              task={task}
+            />
+          ))}
+        </ul>
       </div>
     </div>
   );

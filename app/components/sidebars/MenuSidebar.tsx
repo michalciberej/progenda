@@ -1,14 +1,14 @@
 'use client';
 
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { List, Task, User } from '@prisma/client';
+import { Task, User } from '@prisma/client';
 import { useSidebarContext } from '@/app/context/SidebarContext';
+import { ListWithTaskCount } from '@/typings';
 import clsx from 'clsx';
 
 import MenuSidebarTasks from './MenuSidebarTasks';
 import MenuSidebarLists from './MenuSidebarLists';
 import MenuSidebarFooter from './MenuSidebarFooter';
-import { ListWithTaskCount } from '@/typings';
 
 const MenuSidebar = ({
   user,
@@ -33,8 +33,8 @@ const MenuSidebar = ({
       p-4
       rounded-xl
       divide-y
-      divide-background_DM/50
-      dark:divide-background_LM/50
+      divide-background_DM/20
+      dark:divide-background_LM/20
       bg-secondary_LM
       dark:bg-secondary_DM
       `,

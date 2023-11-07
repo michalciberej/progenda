@@ -53,6 +53,7 @@ const TaskListElement = ({ task }: { task: TaskWithList }) => {
             <span>{task.list.title}</span>
           </div>
         )}
+        {task.body && <p className='flex px-10'>{task.body}</p>}
       </div>
       <button
         type='button'

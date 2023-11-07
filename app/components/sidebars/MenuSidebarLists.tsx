@@ -13,7 +13,7 @@ const MenuSidebarLists = ({
   lists: ListWithTaskCount[];
   isMenuOpened: boolean;
 }) => {
-  const [isListFormOpened, setIsListFormOpened] = useState(true);
+  const [isListFormOpened, setIsListFormOpened] = useState(false);
   const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
   const center = isMenuOpened ? 'justify-between' : 'justify-center';
 

@@ -1,8 +1,8 @@
 const UserPage = () => {
   return (
-    <main className='lg:pl-80 border rounded-xl w-full'>
+    <div className='border border-background_DM/10 dark:border-background_LM/10 rounded-xl w-full h-full'>
       <section></section>
-    </main>
+    </div>
   );
 };
 

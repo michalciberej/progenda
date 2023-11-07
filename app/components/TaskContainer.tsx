@@ -45,7 +45,8 @@ const TaskContainer: React.FC<TaskContainerProps> = ({
           p-1
           text-2xl
           rounded-full
-          text-white
+          text-black
+          dark:text-white
           bg-secondary_LM/50
           dark:bg-secondary_DM/50
           hover:bg-secondary_LM
