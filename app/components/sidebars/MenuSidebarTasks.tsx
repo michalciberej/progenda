@@ -2,14 +2,13 @@
 
 import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { BsListCheck } from 'react-icons/bs';
-import { FaStickyNote } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
 import { Task } from '@prisma/client';
 import clsx from 'clsx';
 import Link from 'next/link';
 import getTaskAmount from '@/app/lib/getTaskAmount';
 
-const MenuSidebarTasks = ({
+const MobileSidebar = ({
   tasks,
   isMenuOpened,
 }: {
@@ -80,21 +79,6 @@ const MenuSidebarTasks = ({
                 {todayTasks}
               </span>
             </li>
-            <li
-              className={clsx(
-                `flex items-center rounded-lg py-2 px-2`,
-                pathname === 'sticky-wall' && 'bg-background_DM/20',
-                center
-              )}>
-              <Link
-                href={'/user/sticky-wall'}
-                className={`flex items-center gap-2 ${
-                  pathname === 'sticky-wall' && 'font-semibold'
-                }`}>
-                <FaStickyNote className='text-xl' />
-                <span className={hiddenOrShown}>Sticky Wall</span>
-              </Link>
-            </li>
           </ul>
         </nav>
       </div>
@@ -102,4 +86,4 @@ const MenuSidebarTasks = ({
   );
 };
 
-export default MenuSidebarTasks;
+export default MobileSidebar;
