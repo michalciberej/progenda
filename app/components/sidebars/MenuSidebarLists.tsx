@@ -5,14 +5,10 @@ import { useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import CreateListForm from '../CreateListForm';
 import { ListWithTaskCount } from '@/typings';
+import { useSidebarContext } from '@/app/context/SidebarContext';
 
-const MenuSidebarLists = ({
-  lists,
-  isMenuOpened,
-}: {
-  lists: ListWithTaskCount[];
-  isMenuOpened: boolean;
-}) => {
+const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
+  const { isMenuOpened, setIsMenuOpened } = useSidebarContext();
   const [isListFormOpened, setIsListFormOpened] = useState(false);
   const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
   const center = isMenuOpened ? 'justify-between' : 'justify-center';
@@ -53,7 +49,10 @@ const MenuSidebarLists = ({
         <button
           type='button'
           aria-label='Add new list'
-          onClick={toggleIsListFormOpened}
+          onClick={() => {
+            toggleIsListFormOpened();
+            setIsMenuOpened(true);
+          }}
           className={clsx(
             ' rounded-lg px-2 py-1 mt-2 flex items-center text-xl',
             isMenuOpened ? 'space-x-2' : 'justify-center'
