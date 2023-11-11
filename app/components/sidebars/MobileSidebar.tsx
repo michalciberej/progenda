@@ -58,10 +58,7 @@ const MobileSidebar = ({
         tasks={tasks}
         isMenuOpened={isMenuOpened}
       />
-      <MenuSidebarLists
-        lists={lists}
-        isMenuOpened={isMenuOpened}
-      />
+      <MenuSidebarLists lists={lists} />
       <MenuSidebarFooter
         user={user}
         isMenuOpened={isMenuOpened}
