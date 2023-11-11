@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { TaskData } from '@/typings';
-import { useRouter } from 'next/navigation';
 import { useSidebarContext } from '@/app/context/SidebarContext';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -22,7 +21,7 @@ const TaskSidebar = ({ lists }: { lists: List[] }) => {
     taskVariant,
     setTaskVariant,
   } = useSidebarContext();
-  const { register, handleSubmit } = useForm<TaskData>({
+  const { register, handleSubmit, reset } = useForm<TaskData>({
     defaultValues: {
       title: '',
       body: '',
@@ -36,7 +35,6 @@ const TaskSidebar = ({ lists }: { lists: List[] }) => {
       list: taskToUpdate.list?.title,
     },
   });
-  const router = useRouter();
 
   const onSubmit: SubmitHandler<TaskData> = (taskData) => {
     setIsLoading(true);
@@ -58,7 +56,6 @@ const TaskSidebar = ({ lists }: { lists: List[] }) => {
             id: '',
             list: { title: '', color: '', id: '', userId: '' },
           });
-          router.refresh();
         })
         .catch(() => toast.error('Something went wrong!'))
         .finally(() => setIsLoading(false));
@@ -81,7 +78,6 @@ const TaskSidebar = ({ lists }: { lists: List[] }) => {
             id: '',
             list: { title: '', color: '', id: '', userId: '' },
           });
-          router.refresh();
         })
         .catch(() => toast.error('Something went wrong!'))
         .finally(() => setIsLoading(false));
@@ -110,6 +106,7 @@ const TaskSidebar = ({ lists }: { lists: List[] }) => {
               id: '',
               list: { title: '', color: '', id: '', userId: '' },
             });
+            reset();
           }}
           className='text-2xl'>
           <AiOutlineClose />
@@ -186,7 +183,7 @@ const TaskSidebar = ({ lists }: { lists: List[] }) => {
                   list: { title: '', color: '', id: '', userId: '' },
                 });
                 setTaskVariant('CREATE');
-                router.refresh();
+                reset();
               })
               .catch(() => toast.error('Something went wrong!'))
               .finally(() => setIsLoading(false));
