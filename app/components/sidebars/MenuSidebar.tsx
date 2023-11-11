@@ -38,7 +38,7 @@ const MenuSidebar = ({
       bg-secondary_LM
       dark:bg-secondary_DM
       `,
-        isMenuOpened ? 'lg:w-80' : 'lg:w-14'
+        isMenuOpened ? 'lg:w-80 min-w-[15rem]' : 'lg:w-14'
       )}>
       <section>
         <div className='flex justify-between items-center pb-4'>
@@ -56,10 +56,7 @@ const MenuSidebar = ({
         tasks={tasks}
         isMenuOpened={isMenuOpened}
       />
-      <MenuSidebarLists
-        lists={lists}
-        isMenuOpened={isMenuOpened}
-      />
+      <MenuSidebarLists lists={lists} />
       <MenuSidebarFooter
         user={user}
         isMenuOpened={isMenuOpened}
