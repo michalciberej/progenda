@@ -17,7 +17,6 @@ async function Sidebar({ children }: { children: React.ReactNode }) {
       h-full
       p-4
       flex
-      max-h-screen
       lg:space-x-4
       bg-background_LM
       dark:bg-background_DM/90 
