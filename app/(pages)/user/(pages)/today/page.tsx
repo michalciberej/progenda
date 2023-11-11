@@ -1,5 +1,5 @@
 import getTodayTasks from '@/app/actions/getTodayTasks';
-import TaskContainer from '@/app/components/TaskContainer';
+import AddTaskButton from '@/app/components/buttons/AddTaskButton';
 import TaskListElement from '@/app/components/TaskListElement';
 
 const TodayPage = async () => {
@@ -7,8 +7,9 @@ const TodayPage = async () => {
 
   return (
     <div>
-      <section>
-        <h1 className='text-5xl relative z-10 my-4'>Today</h1>
+      <section className='flex items-center justify-between'>
+        <h1 className='text-5xl my-4'>Upcoming</h1>
+        <AddTaskButton />
       </section>
       <div className='overflow-auto flex flex-col space-y-6'>
         <ul>
