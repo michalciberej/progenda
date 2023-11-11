@@ -4,6 +4,7 @@ import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { BsListCheck } from 'react-icons/bs';
 import { usePathname } from 'next/navigation';
 import { Task } from '@prisma/client';
+import { BiSolidNote } from 'react-icons/bi';
 import clsx from 'clsx';
 import Link from 'next/link';
 import getTaskAmount from '@/app/lib/getTaskAmount';
@@ -37,6 +38,7 @@ const MobileSidebar = ({
               )}>
               <Link
                 href={'/user/upcoming'}
+                aria-label='Upcoming'
                 className={`flex items-center space-x-2 ${
                   pathname === 'upcoming' && 'font-semibold'
                 }`}>
@@ -62,6 +64,7 @@ const MobileSidebar = ({
               )}>
               <Link
                 href={'/user/today'}
+                aria-label='Today'
                 className={`flex items-center gap-2 ${
                   pathname === 'today' && 'font-semibold'
                 }`}>
@@ -78,6 +81,22 @@ const MobileSidebar = ({
                 )}>
                 {todayTasks}
               </span>
+            </li>
+            <li
+              className={clsx(
+                `flex items-center rounded-lg py-2 px-2`,
+                pathname === 'sticky-wall' && 'bg-background_DM/20',
+                center
+              )}>
+              <Link
+                href={'/user/sticky-wall'}
+                aria-label='Today'
+                className={`flex items-center gap-2 ${
+                  pathname === 'sticky-wall' && 'font-semibold'
+                }`}>
+                <BiSolidNote className='text-xl' />
+                <span className={hiddenOrShown}>Sticky Wall</span>
+              </Link>
             </li>
           </ul>
         </nav>

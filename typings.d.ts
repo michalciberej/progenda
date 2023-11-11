@@ -49,3 +49,9 @@ interface TaskWithList extends Task {
 interface ListWithTaskCount extends List {
   _count: { task: number };
 }
+
+export interface NoteData {
+  title: string;
+  body: string;
+  color: string;
+}
