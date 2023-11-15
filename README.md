@@ -1,6 +1,6 @@
-# Progenda (to-do app)
+# Progenda
 
-[Live demo]()
+[Live demo](https://progenda.vercel.app/)
 
 ## Built with
 
@@ -12,6 +12,7 @@
 - [React Hook Form](https://react-hook-form.com/)
 - [React Hot Toast](https://react-hot-toast.com/)
 - [NextAuth.js](https://next-auth.js.org/)
+- [Pusher](https://pusher.com/)
 - [Axios](https://axios-http.com/)
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
 
@@ -24,6 +25,7 @@
 - Users can create tasks and lists
 - Tasks can be linked with lists
 - Tasks can be updated
+- Show changes in real time
 
 ## Development
 
@@ -58,7 +60,6 @@ $ npm run dev
 
 ## To Do
 
-- Add sticky wall page for notes
 - Add sub-tasks for every task
 - Add tags for every task
 - Make app fully responsive
