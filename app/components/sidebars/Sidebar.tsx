@@ -4,7 +4,6 @@ import getTasks from '@/app/actions/getTasks';
 import MenuSidebar from './MenuSidebar';
 import TaskSidebar from './TaskSidebar';
 import getLists from '@/app/actions/getLists';
-import MobileSidebar from './MenuSidebarTasks';
 
 async function Sidebar({ children }: { children: React.ReactNode }) {
   const user: any = await getUser();

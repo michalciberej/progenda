@@ -1,14 +1,16 @@
 'use client';
 
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import CreateListForm from '../CreateListForm';
-import { ListWithTaskCount } from '@/typings';
+import { ListWithTaskCount, TaskWithList } from '@/typings';
 import { useSidebarContext } from '@/app/context/SidebarContext';
+import { pusherClient } from '@/app/lib/pusher';
 
 const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
   const { isMenuOpened, setIsMenuOpened } = useSidebarContext();
+  const [allLists, setAllLists] = useState<ListWithTaskCount[]>(lists);
   const [isListFormOpened, setIsListFormOpened] = useState(false);
   const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
   const center = isMenuOpened ? 'justify-between' : 'justify-center';
@@ -17,12 +19,70 @@ const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
     setIsListFormOpened(!isListFormOpened);
   };
 
+  useEffect(() => {
+    pusherClient.subscribe('new-list');
+    pusherClient.subscribe('new-task');
+
+    const listHandler = (list: ListWithTaskCount) => {
+      setAllLists(allLists.concat(list));
+    };
+
+    const taskHandler = (task: TaskWithList) => {
+      setAllLists(
+        allLists.map((list) => {
+          if (list.id === task.listId) {
+            return { ...list, _count: { task: (list._count.task += 1) } };
+          } else return list;
+        })
+      );
+    };
+
+    pusherClient.bind('list:new', listHandler);
+    pusherClient.bind('task:new', taskHandler);
+
+    return () => {
+      pusherClient.unsubscribe('new-list');
+      pusherClient.unsubscribe('new-task');
+      pusherClient.unbind('list:new', listHandler);
+      pusherClient.unbind('task:new', taskHandler);
+    };
+  }, [allLists]);
+
+  useEffect(() => {
+    pusherClient.subscribe('delete-list');
+    pusherClient.subscribe('delete-task');
+
+    const listHandler = (oldList: ListWithTaskCount) => {
+      setAllLists(allLists.filter((list) => list.id !== oldList.id));
+    };
+
+    const taskHandler = (oldTask: TaskWithList) => {
+      setAllLists(
+        allLists.map((list) => {
+          if (list.id === oldTask.listId) {
+            return { ...list, _count: { task: (list._count.task -= 1) } };
+          } else return list;
+        })
+      );
+    };
+
+    pusherClient.bind('list:delete', listHandler);
+    pusherClient.bind('task:delete', taskHandler);
+
+    return () => {
+      pusherClient.unsubscribe('delete-list');
+      pusherClient.unsubscribe('delete-task');
+      pusherClient.unbind('list:delete', listHandler);
+      pusherClient.unbind('task:delete', taskHandler);
+    };
+  }, [allLists]);
+
   return (
     <section>
       <div className='flex flex-col py-4'>
         <h2 className={`font-semibold mb-1 ${hiddenOrShown}`}>Lists</h2>
         <ul className='flex flex-col space-y-2'>
-          {lists.map((list, index) => (
+          {allLists.map((list, index) => (
             <li
               key={index}
               className={clsx(

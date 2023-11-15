@@ -2,6 +2,7 @@ import prisma from '@/app/lib/prismadb';
 import getUser from '@/app/actions/getUser';
 import { TaskData } from '@/typings';
 import { NextResponse } from 'next/server';
+import { pusherServer } from '@/app/lib/pusher';
 
 export async function POST(request: Request) {
   const user = await getUser();
@@ -32,7 +33,12 @@ export async function POST(request: Request) {
         },
       },
     },
+    include: {
+      list: true,
+    },
   });
+
+  await pusherServer.trigger('new-task', 'task:new', task);
 
   return NextResponse.json(task);
 }

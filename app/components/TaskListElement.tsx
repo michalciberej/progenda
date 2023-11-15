@@ -5,20 +5,17 @@ import { BsCalendar3 } from 'react-icons/bs';
 import { useSidebarContext } from '../context/SidebarContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
 import { TaskWithList } from '@/typings';
 
 const TaskListElement = ({ task }: { task: TaskWithList }) => {
   const { setTaskToUpdate, isTaskOpened, setIsTaskOpened, setTaskVariant } =
     useSidebarContext();
-  const router = useRouter();
 
   const handleTaskComplete = () => {
     axios
       .post('/api/deleteTask', task)
       .then(() => toast.success('Task completed!'))
-      .catch(() => toast.error('Something went wrong'))
-      .finally(() => router.refresh());
+      .catch(() => toast.error('Something went wrong'));
   };
 
   return (

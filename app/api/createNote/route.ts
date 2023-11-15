@@ -2,6 +2,7 @@ import prisma from '@/app/lib/prismadb';
 import getUser from '@/app/actions/getUser';
 import { NextResponse } from 'next/server';
 import { NoteData } from '@/typings';
+import { pusherServer } from '@/app/lib/pusher';
 
 export async function POST(request: Request) {
   const user = await getUser();
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
     return new NextResponse('Unauthorized', { status: 400 });
   }
 
-  const task = await prisma.note.create({
+  const note = await prisma.note.create({
     data: {
       title,
       body,
@@ -29,5 +30,7 @@ export async function POST(request: Request) {
     },
   });
 
-  return NextResponse.json(task);
+  pusherServer.trigger('new-note', 'note:new', note);
+
+  return NextResponse.json(note);
 }

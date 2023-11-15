@@ -62,7 +62,6 @@ const NoteForm = () => {
       <StyledButton
         primary
         func={() => {
-          console.log(noteData);
           axios
             .post('/api/createNote', noteData)
             .then(() => {
@@ -79,7 +78,7 @@ const NoteForm = () => {
           type='button'
           aria-label='Add note'
           onClick={() => setShowForm(!showForm)}
-          className='text-8xl absolute inset-0 z-50 bg-secondary_LM dark:bg-secondary_DM '>
+          className='text-8xl absolute w-full inset-0 z-50 bg-secondary_LM dark:bg-secondary_DM '>
           +
         </button>
       )}

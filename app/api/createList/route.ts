@@ -2,6 +2,7 @@ import prisma from '@/app/lib/prismadb';
 import getUser from '@/app/actions/getUser';
 import { ListData } from '@/typings';
 import { NextResponse } from 'next/server';
+import { pusherServer } from '@/app/lib/pusher';
 
 export async function POST(request: Request) {
   const user = await getUser();
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
     return new NextResponse('Unauthorized', { status: 400 });
   }
 
-  const task = await prisma.list.create({
+  const list = await prisma.list.create({
     data: {
       title,
       color,
@@ -26,7 +27,12 @@ export async function POST(request: Request) {
         },
       },
     },
+    include: {
+      _count: true,
+    },
   });
 
-  return NextResponse.json(task);
+  await pusherServer.trigger('new-list', 'list:new', list);
+
+  return NextResponse.json(list);
 }

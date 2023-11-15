@@ -1,6 +1,7 @@
 import prisma from '@/app/lib/prismadb';
 import getUser from '@/app/actions/getUser';
 import { NextResponse } from 'next/server';
+import { pusherServer } from '@/app/lib/pusher';
 
 export async function POST(request: Request) {
   const user = await getUser();
@@ -14,7 +15,7 @@ export async function POST(request: Request) {
     return new NextResponse('Unauthorized', { status: 400 });
   }
 
-  const list = await prisma.note.delete({
+  const note = await prisma.note.delete({
     where: {
       user: {
         is: {
@@ -25,5 +26,7 @@ export async function POST(request: Request) {
     },
   });
 
-  return NextResponse.json(list);
+  pusherServer.trigger('delete-note', 'note:delete', note);
+
+  return NextResponse.json(note);
 }

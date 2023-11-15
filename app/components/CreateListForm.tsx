@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ListData } from '@/typings';
-import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 
 import clsx from 'clsx';
 import axios from 'axios';
@@ -30,8 +30,8 @@ const CreateListForm = ({
     title: '',
     color: '#f87171',
   });
+  const { handleSubmit } = useForm();
   const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
-  const router = useRouter();
 
   const onSubmit = () => {
     axios
@@ -39,14 +39,13 @@ const CreateListForm = ({
       .then(() => {
         toast.success('List created!');
         toggleIsListFormOpened();
-        router.refresh();
       })
       .catch(() => toast.error('Something went wrong!'));
   };
 
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className={clsx(
         'border-2 rounded-xl flex flex-col space-y-2 border-background_DM/50 p-3 dark:border-background_LM/20',
         hiddenOrShown
@@ -70,7 +69,7 @@ const CreateListForm = ({
       <div className='flex justify-between items-center px-1'>
         {colors.map((color, index) => (
           <input
-            checked={index === 0 ? true : false}
+            defaultChecked={index === 0 ? true : false}
             key={index}
             type='radio'
             value={color}

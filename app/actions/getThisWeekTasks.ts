@@ -4,7 +4,7 @@ import getCurrentDate from '../lib/getCurrentDate';
 
 const getThisWeekTasks = async () => {
   const user = await getUser();
-  const { today, todayNextWeek } = getCurrentDate();
+  const { tomorrow, todayNextWeek } = getCurrentDate();
 
   if (!user?.id) {
     return [];
@@ -23,7 +23,7 @@ const getThisWeekTasks = async () => {
         },
         date: {
           lte: todayNextWeek,
-          gte: today,
+          gt: tomorrow,
         },
       },
       include: { list: true },

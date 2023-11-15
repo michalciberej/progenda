@@ -2,6 +2,7 @@ import prisma from '@/app/lib/prismadb';
 import getUser from '@/app/actions/getUser';
 import { NextResponse } from 'next/server';
 import { Task } from '@prisma/client';
+import { pusherServer } from '@/app/lib/pusher';
 
 export async function POST(request: Request) {
   const user = await getUser();
@@ -25,6 +26,8 @@ export async function POST(request: Request) {
       },
     },
   });
+
+  pusherServer.trigger('delete-task', 'task:delete', task);
 
   return NextResponse.json(task);
 }

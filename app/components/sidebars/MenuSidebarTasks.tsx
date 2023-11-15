@@ -3,25 +3,66 @@
 import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { BsListCheck } from 'react-icons/bs';
 import { usePathname } from 'next/navigation';
-import { Task } from '@prisma/client';
 import { BiSolidNote } from 'react-icons/bi';
 import clsx from 'clsx';
 import Link from 'next/link';
-import getTaskAmount from '@/app/lib/getTaskAmount';
+import { useEffect, useState } from 'react';
+import getCurrentDate from '@/app/lib/getCurrentDate';
+import { TaskWithList } from '@/typings';
+import { pusherClient } from '@/app/lib/pusher';
 
 const MobileSidebar = ({
   tasks,
   isMenuOpened,
 }: {
-  tasks: Task[];
+  tasks: TaskWithList[];
   isMenuOpened: boolean;
 }) => {
   const pathname = usePathname().split('/').pop();
-  const upcomingTasks = getTaskAmount(tasks, 'total') || 0;
-  const todayTasks = getTaskAmount(tasks, 'today');
-
+  const { today } = getCurrentDate();
+  const [upcomingTasks, setUpcomingTasks] = useState(
+    tasks.filter((task) => task.date !== today)
+  );
+  const [todayTasks, setTodayTasks] = useState(
+    tasks.filter((task) => task.date === today)
+  );
   const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
   const center = isMenuOpened ? 'justify-between' : 'justify-center';
+
+  useEffect(() => {
+    pusherClient.subscribe('new-task');
+
+    const taskHandler = (task: TaskWithList) => {
+      if (task.date === today) {
+        setTodayTasks(todayTasks.concat(task));
+      } else setUpcomingTasks(upcomingTasks.concat(task));
+    };
+
+    pusherClient.bind('task:new', taskHandler);
+    return () => {
+      pusherClient.unsubscribe('new-task');
+      pusherClient.unbind('task:new', taskHandler);
+    };
+  }, [todayTasks, upcomingTasks, today]);
+
+  useEffect(() => {
+    pusherClient.subscribe('delete-task');
+
+    const taskHandler = (oldTask: TaskWithList) => {
+      if (oldTask.date === today) {
+        setTodayTasks(todayTasks.filter((task) => task.id !== oldTask.id));
+      } else
+        setUpcomingTasks(
+          upcomingTasks.filter((task) => task.id !== oldTask.id)
+        );
+    };
+
+    pusherClient.bind('task:delete', taskHandler);
+    return () => {
+      pusherClient.unsubscribe('delete-task');
+      pusherClient.unbind('task:delete', taskHandler);
+    };
+  }, [todayTasks, upcomingTasks, today]);
 
   return (
     <section>
@@ -53,7 +94,7 @@ const MobileSidebar = ({
                     : 'bg-secondary_DM/20 dark:bg-secondary_LM/20',
                   hiddenOrShown
                 )}>
-                {upcomingTasks}
+                {upcomingTasks.length}
               </span>
             </li>
             <li
@@ -79,7 +120,7 @@ const MobileSidebar = ({
                     : 'bg-secondary_DM/20 dark:bg-secondary_LM/20',
                   hiddenOrShown
                 )}>
-                {todayTasks}
+                {todayTasks.length}
               </span>
             </li>
             <li

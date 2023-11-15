@@ -4,14 +4,55 @@ import { Task } from '@prisma/client';
 import TaskListElement from './TaskListElement';
 import clsx from 'clsx';
 import EmptyState from './EmptyState';
-import { Suspense } from 'react';
+import { useEffect, useState } from 'react';
+import { pusherClient } from '../lib/pusher';
+import { Variant } from '@/typings';
+import getCurrentDate from '../lib/getCurrentDate';
 
 interface TaskContainerProps {
   title: string;
   tasks: Task[];
+  date: Variant;
 }
 
-const TaskContainer: React.FC<TaskContainerProps> = ({ title, tasks }) => {
+const TaskContainer: React.FC<TaskContainerProps> = ({
+  title,
+  tasks,
+  date,
+}) => {
+  const [allTasks, setAllTasks] = useState<Task[]>(tasks);
+  const { today, tomorrow } = getCurrentDate();
+
+  useEffect(() => {
+    pusherClient.subscribe('new-task');
+
+    const taskHandler = (task: Task) => {
+      setAllTasks(allTasks.concat(task));
+    };
+
+    pusherClient.bind('task:new', taskHandler);
+
+    return () => {
+      pusherClient.unsubscribe('new-task');
+      pusherClient.unbind('task:new', taskHandler);
+    };
+  }, [allTasks]);
+
+  useEffect(() => {
+    pusherClient.subscribe('delete-task');
+
+    const taskHandler = (oldTask: Task) => {
+      setAllTasks(allTasks.filter((task: Task) => task.id !== oldTask.id));
+    };
+
+    pusherClient.bind('task:delete', taskHandler);
+
+    return () => {
+      pusherClient.unsubscribe('delete-task');
+      pusherClient.unbind('task:delete', taskHandler);
+    };
+  }, [allTasks]);
+
   return (
     <section
       className={clsx(
@@ -24,11 +65,27 @@ const TaskContainer: React.FC<TaskContainerProps> = ({ title, tasks }) => {
             className={clsx(
               'py-1 px-2 rounded-md mr-1 tracking-tighter leading-snug bg-secondary_DM/20 dark:bg-secondary_LM/20 '
             )}>
-            {tasks.length}
+            {allTasks.reduce((acc, cur) => {
+              if (date === 'today' && cur.date === today) acc += 1;
+              if (date === 'tomorrow' && cur.date === tomorrow) acc += 1;
+              if (
+                date === 'total' &&
+                cur.date !== today &&
+                cur.date !== tomorrow
+              )
+                acc += 1;
+              return acc;
+            }, 0)}
           </span>
         </div>
       </div>
-      {tasks.length !== 0 ? (
+      {allTasks.reduce((acc, cur) => {
+        if (date === 'today' && cur.date === today) acc += 1;
+        if (date === 'tomorrow' && cur.date === tomorrow) acc += 1;
+        if (date === 'total' && cur.date !== today && cur.date !== tomorrow)
+          acc += 1;
+        return acc;
+      }, 0) !== 0 ? (
         <ul
           className='
           divide-y
@@ -37,12 +94,35 @@ const TaskContainer: React.FC<TaskContainerProps> = ({ title, tasks }) => {
           h-full
           overflow-auto
           scroll-smooth'>
-          {tasks.map((task) => (
-            <TaskListElement
-              key={task.id}
-              task={task}
-            />
-          ))}
+          {allTasks.map((task) => {
+            if (date === 'today' && task.date === today)
+              return (
+                <TaskListElement
+                  key={task.id}
+                  task={task}
+                />
+              );
+
+            if (date === 'tomorrow' && task.date === tomorrow)
+              return (
+                <TaskListElement
+                  key={task.id}
+                  task={task}
+                />
+              );
+
+            if (
+              date === 'total' &&
+              task.date !== today &&
+              task.date !== tomorrow
+            )
+              return (
+                <TaskListElement
+                  key={task.id}
+                  task={task}
+                />
+              );
+          })}
         </ul>
       ) : (
         <EmptyState />

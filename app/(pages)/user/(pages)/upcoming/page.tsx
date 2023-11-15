@@ -20,14 +20,17 @@ const UpcomingPage = async () => {
         <TaskContainer
           title='Today'
           tasks={todayTasks}
+          date='today'
         />
         <TaskContainer
           title='Tomorrow'
           tasks={tomorrowTasks}
+          date='tomorrow'
         />
         <TaskContainer
           title='This Week'
           tasks={thisWeekTasks}
+          date='total'
         />
       </div>
     </div>
