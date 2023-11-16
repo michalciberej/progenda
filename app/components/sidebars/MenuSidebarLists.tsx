@@ -10,7 +10,7 @@ import { pusherClient } from '@/app/lib/pusher';
 
 const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
   const { isMenuOpened, setIsMenuOpened } = useSidebarContext();
-  const [allLists, setAllLists] = useState<ListWithTaskCount[]>(lists);
+  const [allLists, setAllLists] = useState<ListWithTaskCount[]>([]);
   const [isListFormOpened, setIsListFormOpened] = useState(false);
   const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
   const center = isMenuOpened ? 'justify-between' : 'justify-center';
@@ -18,6 +18,10 @@ const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
   const toggleIsListFormOpened = () => {
     setIsListFormOpened(!isListFormOpened);
   };
+
+  useEffect(() => {
+    setAllLists(lists);
+  }, [lists]);
 
   useEffect(() => {
     pusherClient.subscribe('new-list');

@@ -7,7 +7,11 @@ import { useEffect, useState } from 'react';
 import { pusherClient } from '@/app/lib/pusher';
 
 const NoteContainer = ({ notes }: { notes: Note[] }) => {
-  const [allNotes, setAllNotes] = useState<Note[]>(notes);
+  const [allNotes, setAllNotes] = useState<Note[]>([]);
+
+  useEffect(() => {
+    setAllNotes(notes);
+  }, [notes]);
 
   useEffect(() => {
     pusherClient.subscribe('new-note');

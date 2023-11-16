@@ -1,6 +1,6 @@
 'use client';
 
-import { GiHamburgerMenu } from 'react-icons/gi';
+import { RxHamburgerMenu } from 'react-icons/rx';
 import { Task, User } from '@prisma/client';
 import { useSidebarContext } from '@/app/context/SidebarContext';
 import { ListWithTaskCount } from '@/typings';
@@ -48,7 +48,7 @@ const MenuSidebar = ({
             aria-label='menu'
             onClick={() => setIsMenuOpened(!isMenuOpened)}
             className='text-2xl'>
-            <GiHamburgerMenu />
+            <RxHamburgerMenu />
           </button>
         </div>
       </section>
