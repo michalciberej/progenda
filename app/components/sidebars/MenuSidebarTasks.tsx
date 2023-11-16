@@ -3,13 +3,14 @@
 import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { BsListCheck } from 'react-icons/bs';
 import { usePathname } from 'next/navigation';
-import { BiSolidNote } from 'react-icons/bi';
-import clsx from 'clsx';
-import Link from 'next/link';
+import { MdOutlineEditNote } from 'react-icons/md';
+import { IoCalendarOutline } from 'react-icons/io5';
 import { useEffect, useState } from 'react';
-import getCurrentDate from '@/app/lib/getCurrentDate';
 import { TaskWithList } from '@/typings';
 import { pusherClient } from '@/app/lib/pusher';
+import clsx from 'clsx';
+import Link from 'next/link';
+import getCurrentDate from '@/app/lib/getCurrentDate';
 
 const MobileSidebar = ({
   tasks,
@@ -20,21 +21,22 @@ const MobileSidebar = ({
 }) => {
   const pathname = usePathname().split('/').pop();
   const { today } = getCurrentDate();
-  const [upcomingTasks, setUpcomingTasks] = useState(
-    tasks.filter((task) => task.date !== today)
-  );
-  const [todayTasks, setTodayTasks] = useState(
-    tasks.filter((task) => task.date === today)
-  );
+  const [upcomingTasks, setUpcomingTasks] = useState<TaskWithList[]>([]);
+  const [todayTasks, setTodayTasks] = useState<TaskWithList[]>();
   const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
   const center = isMenuOpened ? 'justify-between' : 'justify-center';
+
+  useEffect(() => {
+    setUpcomingTasks(tasks.filter((task) => task.date !== today));
+    setTodayTasks(tasks.filter((task) => task.date === today));
+  }, [tasks, today]);
 
   useEffect(() => {
     pusherClient.subscribe('new-task');
 
     const taskHandler = (task: TaskWithList) => {
       if (task.date === today) {
-        setTodayTasks(todayTasks.concat(task));
+        setTodayTasks(todayTasks?.concat(task));
       } else setUpcomingTasks(upcomingTasks.concat(task));
     };
 
@@ -50,7 +52,7 @@ const MobileSidebar = ({
 
     const taskHandler = (oldTask: TaskWithList) => {
       if (oldTask.date === today) {
-        setTodayTasks(todayTasks.filter((task) => task.id !== oldTask.id));
+        setTodayTasks(todayTasks?.filter((task) => task.id !== oldTask.id));
       } else
         setUpcomingTasks(
           upcomingTasks.filter((task) => task.id !== oldTask.id)
@@ -120,7 +122,7 @@ const MobileSidebar = ({
                     : 'bg-secondary_DM/20 dark:bg-secondary_LM/20',
                   hiddenOrShown
                 )}>
-                {todayTasks.length}
+                {todayTasks?.length}
               </span>
             </li>
             <li
@@ -135,8 +137,24 @@ const MobileSidebar = ({
                 className={`flex items-center gap-2 ${
                   pathname === 'sticky-wall' && 'font-semibold'
                 }`}>
-                <BiSolidNote className='text-xl' />
+                <MdOutlineEditNote className='text-xl' />
                 <span className={hiddenOrShown}>Sticky Wall</span>
+              </Link>
+            </li>
+            <li
+              className={clsx(
+                `flex items-center rounded-lg py-2 px-2`,
+                pathname === 'calendar' && 'bg-background_DM/20',
+                center
+              )}>
+              <Link
+                href={'/user/calendar'}
+                aria-label='Today'
+                className={`flex items-center gap-2 ${
+                  pathname === 'calendar' && 'font-semibold'
+                }`}>
+                <IoCalendarOutline className='text-xl' />
+                <span className={hiddenOrShown}>Calendar</span>
               </Link>
             </li>
           </ul>
