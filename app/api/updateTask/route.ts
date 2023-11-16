@@ -1,7 +1,8 @@
 import prisma from '@/app/lib/prismadb';
 import getUser from '@/app/actions/getUser';
-import { TaskData, TaskToUpdate } from '@/typings';
+import { TaskData } from '@/typings';
 import { NextResponse } from 'next/server';
+import { pusherServer } from '@/app/lib/pusher';
 
 export async function POST(request: Request) {
   const user = await getUser();
@@ -33,6 +34,8 @@ export async function POST(request: Request) {
       listId: list,
     },
   });
+
+  await pusherServer.trigger('update:task', 'task:update', task);
 
   return NextResponse.json(task);
 }

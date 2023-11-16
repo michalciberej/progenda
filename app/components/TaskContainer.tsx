@@ -20,21 +20,45 @@ const TaskContainer: React.FC<TaskContainerProps> = ({
   tasks,
   date,
 }) => {
-  const [allTasks, setAllTasks] = useState<Task[]>(tasks);
+  const [allTasks, setAllTasks] = useState<Task[]>([]);
   const { today, tomorrow } = getCurrentDate();
+
+  useEffect(() => {
+    setAllTasks(tasks);
+  }, [tasks]);
+
+  useEffect(() => {
+    pusherClient.subscribe('update-task');
+
+    const updateTaskHandler = (updatedTask: Task) => {
+      setAllTasks(
+        allTasks.map((task) => {
+          if (task.id === updatedTask.id) {
+            return updatedTask;
+          } else return task;
+        })
+      );
+    };
+
+    pusherClient.bind('task:update', updateTaskHandler);
+
+    return () => {
+      pusherClient.unsubscribe('update-task');
+      pusherClient.unbind('task:update', updateTaskHandler);
+    };
+  }, [allTasks]);
 
   useEffect(() => {
     pusherClient.subscribe('new-task');
 
-    const taskHandler = (task: Task) => {
+    const createTaskHandler = (task: Task) => {
       setAllTasks(allTasks.concat(task));
     };
 
-    pusherClient.bind('task:new', taskHandler);
-
+    pusherClient.bind('task:new', createTaskHandler);
     return () => {
       pusherClient.unsubscribe('new-task');
-      pusherClient.unbind('task:new', taskHandler);
+      pusherClient.unbind('task:new', createTaskHandler);
     };
   }, [allTasks]);
 
