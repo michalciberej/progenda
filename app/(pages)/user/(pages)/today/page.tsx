@@ -8,7 +8,7 @@ const TodayPage = async () => {
   return (
     <div>
       <section className='flex items-center justify-between'>
-        <h1 className='text-5xl my-4'>Upcoming</h1>
+        <h1 className='text-5xl my-4'>Today</h1>
         <AddTaskButton />
       </section>
       <div className='overflow-auto flex flex-col space-y-6'>
