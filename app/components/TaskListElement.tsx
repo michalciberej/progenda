@@ -23,34 +23,42 @@ const TaskListElement = ({ task }: { task: TaskWithList }) => {
       <div
         className='
       flex
-      space-x-10
-      divide-x-2
+      flex-col
+      lg:flex-row
+      space-y-2
+      lg:space-y-0
+      lg:space-x-10
+      lg:divide-x-2
       divide-background_DM/10
       dark:divide-background_LM/10
       '>
-        <div className='flex items-center space-x-4'>
+        <div className='flex items-center space-x-3'>
           <input
             type='checkbox'
             onChange={handleTaskComplete}
           />
-          <span className='text-lg'>{task.title}</span>
+          <span className='w-[30ch] truncate'>{task.title}</span>
         </div>
-        {task.date && (
-          <div className='flex space-x-3 items-center px-10 text-lg'>
-            <BsCalendar3 />
-            <span>{task.date}</span>
-          </div>
+        <div className='flex divide divide-x-2 lg:divide-none space-x-5 lg:space-x-0 divide-background_DM/10 dark:divide-background_LM/10'>
+          {task.date && (
+            <div className='flex space-x-3 items-center pl-7 lg:pl-10 '>
+              <BsCalendar3 />
+              <span>{task.date}</span>
+            </div>
+          )}
+          {task.list && (
+            <div className='flex items-center pl-5 lg:pl-10 space-x-3'>
+              <div
+                className='w-5 h-5 rounded-sm'
+                style={{ backgroundColor: task.list.color }}
+              />
+              <span>{task.list.title}</span>
+            </div>
+          )}
+        </div>
+        {task.body && (
+          <p className='flex pl-7 lg:pl-10 truncate'>{task.body}</p>
         )}
-        {task.list && (
-          <div className='flex items-center px-10 space-x-3'>
-            <div
-              className='w-5 h-5 rounded-sm'
-              style={{ backgroundColor: task.list.color }}
-            />
-            <span>{task.list.title}</span>
-          </div>
-        )}
-        {task.body && <p className='flex px-10'>{task.body}</p>}
       </div>
       <button
         type='button'
