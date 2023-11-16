@@ -15,7 +15,3 @@ const CalendarPage = async () => {
 };
 
 export default CalendarPage;
-
-export const generateStaticProps = () => {
-  return {};
-};
