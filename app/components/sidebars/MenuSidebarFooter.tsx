@@ -1,12 +1,12 @@
 'use client';
 
 import { useThemeContext } from '@/app/context/ThemeContext';
-import { IoMdSettings } from 'react-icons/io';
+import { IoSettingsOutline } from 'react-icons/io5';
 import { GoSignOut } from 'react-icons/go';
-import { BsFillSunFill } from 'react-icons/bs';
+import { GoSun } from 'react-icons/go';
 import { signOut } from 'next-auth/react';
 import { User } from '@prisma/client';
-import { FaMoon } from 'react-icons/fa';
+import { FaRegMoon } from 'react-icons/fa6';
 import Link from 'next/link';
 
 import Avatar from '../Avatar';
@@ -40,13 +40,13 @@ const MenuSidebarFooter = ({
             type='button'
             aria-label='Change theme'
             onClick={toggleTheme}>
-            {isDarkTheme ? <BsFillSunFill /> : <FaMoon />}
+            {isDarkTheme ? <GoSun /> : <FaRegMoon />}
           </button>
           <Link
             href={'/user/settings'}
             type='button'
             aria-label='Settings'>
-            <IoMdSettings />
+            <IoSettingsOutline />
           </Link>
         </div>
         <Avatar user={user} />
