@@ -55,3 +55,13 @@ export interface NoteData {
   body: string;
   color: string;
 }
+
+export interface Month {
+  name: string;
+  days: Day[];
+}
+
+export interface Day {
+  number: number;
+  tasks: TaskWithList[]
+}
