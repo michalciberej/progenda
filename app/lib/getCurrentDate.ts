@@ -2,6 +2,7 @@ const getCurrentDate = () => {
   let today: string | Date = new Date();
   let day: string | number = today.getDate();
   let month: string | number = today.getMonth() + 1;
+  const monthNumber = today.getMonth();
   const year = today.getFullYear();
 
   let tomorrow: string | Date = new Date(today);
@@ -27,7 +28,7 @@ const getCurrentDate = () => {
   tomorrow = tmrwYear + '-' + tmrwMonth + '-' + tmrwDay;
   todayNextWeek = nextWeekYear + '-' + nextWeekMonth + '-' + nextWeekDay;
 
-  return { today, tomorrow, todayNextWeek, day, month, year };
+  return { today, tomorrow, todayNextWeek, day, month, year, monthNumber };
 };
 
 export default getCurrentDate;
