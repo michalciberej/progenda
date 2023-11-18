@@ -15,15 +15,19 @@
 - [Pusher](https://pusher.com/)
 - [Axios](https://axios-http.com/)
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
+- [Headless UI](https://headlessui.com/)
+- [Next Cloudinary](https://next.cloudinary.dev/)
 
 ## Features
 
 - Darkmode
+- Responsive Design
 - Authentication with credentials or with providers
 - Encrypted password for all users
-- All tasks, lists and users are stored in database
+- All tasks, lists, Notes and users are stored in database
 - Users can create tasks and lists
-- Tasks can be linked with lists
+- User can Change/update user data
+- User can see tasks in calendar
 - Tasks can be updated
 - Show changes in real time
 
@@ -62,7 +66,6 @@ $ npm run dev
 
 - Add sub-tasks for every task
 - Add tags for every task
-- Make app fully responsive
 
 ---
 
