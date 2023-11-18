@@ -25,7 +25,7 @@ const SingInForm = () => {
 
   useEffect(() => {
     if (session?.status === 'authenticated') {
-      router.push(`/user`);
+      router.push('/user');
     }
   }, [session?.status, router]);
 
@@ -38,12 +38,15 @@ const SingInForm = () => {
     setIsLoading(true);
 
     if (variant === 'LOGIN') {
-      signIn('credentials', { ...credentials, redirect: false })
+      signIn('credentials', {
+        ...credentials,
+        redirect: false,
+      })
         .then((callback) => {
           if (callback?.error) toast.error('invalid credentials');
           if (!callback?.error && callback?.ok) {
             toast.success('Logged in!');
-            router.push(`/user`);
+            router.push('/user');
           }
         })
         .finally(() => {
@@ -73,7 +76,7 @@ const SingInForm = () => {
         }
         if (!callback?.error && callback?.ok) {
           toast.success('Logged in!');
-          router.push(`/user`);
+          router.push('/user');
         }
       })
       .finally(() => setIsLoading(false));
@@ -149,6 +152,7 @@ const SingInForm = () => {
         <StyledButton
           disabled={isLoading}
           fullWidth
+          type='submit'
           primary>
           {variant === 'LOGIN' ? 'Sign in' : 'Create account'}
         </StyledButton>
