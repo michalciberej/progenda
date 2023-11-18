@@ -8,6 +8,7 @@ export interface StyledButtonProps {
   fullWidth?: boolean;
   disabled?: boolean;
   func?: (string) => void;
+  type?: 'button' | 'submit';
 }
 
 export interface StyledLinkProps {
@@ -63,5 +64,5 @@ export interface Month {
 
 export interface Day {
   number: number;
-  tasks: TaskWithList[]
+  tasks: TaskWithList[];
 }
