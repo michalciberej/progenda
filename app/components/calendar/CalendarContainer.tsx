@@ -5,6 +5,7 @@ import getYearData from '@/app/lib/getYearData';
 import { TaskWithList } from '@/typings';
 import { useEffect, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import DayCard from './DayCard';
 
 const CalendarContainer = ({ tasks }: { tasks: TaskWithList[] }) => {
   const { monthNumber, year } = getCurrentDate();
@@ -57,21 +58,10 @@ const CalendarContainer = ({ tasks }: { tasks: TaskWithList[] }) => {
       </div>
       <ul className='w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-x-2 gap-y-3 h-full'>
         {yearData[currentMonth].days.map((day, index) => (
-          <li
+          <DayCard
             key={index}
-            className='w-full h-32 border border-background_DM/10 dark:border-background_LM/10 p-2 rounded-md overflow-auto shadow-md'>
-            <span className='font-semibold text-lg'>{day.number}</span>
-            <ul className='flex flex-col space-y-1'>
-              {day.tasks.map((task) => (
-                <li
-                  key={task.id}
-                  className='rounded-md px-2 text-text_LM truncate'
-                  style={{ backgroundColor: task.list?.color }}>
-                  {task.title}
-                </li>
-              ))}
-            </ul>
-          </li>
+            day={day}
+          />
         ))}
       </ul>
     </section>
