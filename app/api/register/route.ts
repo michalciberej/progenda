@@ -18,5 +18,6 @@ export async function POST(request: Request) {
       encrypted_password,
     },
   });
+
   return NextResponse.json(user);
 }
