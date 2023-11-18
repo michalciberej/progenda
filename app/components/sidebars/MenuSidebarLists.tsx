@@ -7,11 +7,14 @@ import CreateListForm from '../CreateListForm';
 import { ListWithTaskCount, TaskWithList } from '@/typings';
 import { useSidebarContext } from '@/app/context/SidebarContext';
 import { pusherClient } from '@/app/lib/pusher';
+import { LuWrench } from 'react-icons/lu';
+import ListModal from '../modal/ListModal';
 
 const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
   const { isMenuOpened, setIsMenuOpened } = useSidebarContext();
   const [allLists, setAllLists] = useState<ListWithTaskCount[]>([]);
   const [isListFormOpened, setIsListFormOpened] = useState(false);
+  const [isModalOpened, setIsModalOpened] = useState(false);
   const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
   const center = isMenuOpened ? 'justify-between' : 'justify-center';
 
@@ -83,9 +86,27 @@ const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
 
   return (
     <section>
+      <ListModal
+        isOpen={isModalOpened}
+        onClose={() => setIsModalOpened(false)}
+        lists={allLists}
+      />
       <div className='flex flex-col py-4'>
-        <h2 className={`font-semibold mb-1 ${hiddenOrShown}`}>Lists</h2>
-        <ul className='flex flex-col space-y-2'>
+        <div className='w-full flex items-center justify-between'>
+          <h2 className={`font-semibold mb-1 ${hiddenOrShown}`}>Lists</h2>
+          <button
+            type='button'
+            onClick={() => setIsModalOpened(true)}
+            className={clsx(
+              `text-sm brightness-75`,
+              hiddenOrShown,
+              allLists.length === 0 && 'hidden'
+            )}
+            aria-label='open list settings modal'>
+            <LuWrench />
+          </button>
+        </div>
+        <ul className='flex flex-col space-y-2 overflow-auto max-h-40'>
           {allLists.map((list, index) => (
             <li
               key={index}

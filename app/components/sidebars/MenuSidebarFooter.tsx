@@ -7,7 +7,8 @@ import { GoSun } from 'react-icons/go';
 import { signOut } from 'next-auth/react';
 import { User } from '@prisma/client';
 import { FaRegMoon } from 'react-icons/fa6';
-import Link from 'next/link';
+import SettingsModal from '../modal/SettingsModal';
+import { useState } from 'react';
 
 import Avatar from '../Avatar';
 
@@ -19,9 +20,15 @@ const MenuSidebarFooter = ({
   isMenuOpened: boolean;
 }) => {
   const { isDarkTheme, toggleTheme } = useThemeContext();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <section className='mt-auto'>
+      <SettingsModal
+        user={user}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
       <div
         className={`flex flex-1 pt-4 text-xl justify-between ${
           isMenuOpened ? 'items-end' : 'flex-col items-center space-y-4'
@@ -42,12 +49,12 @@ const MenuSidebarFooter = ({
             onClick={toggleTheme}>
             {isDarkTheme ? <GoSun /> : <FaRegMoon />}
           </button>
-          <Link
-            href={'/user/settings'}
+          <button
             type='button'
+            onClick={() => setIsOpen(true)}
             aria-label='Settings'>
             <IoSettingsOutline />
-          </Link>
+          </button>
         </div>
         <Avatar user={user} />
       </div>
