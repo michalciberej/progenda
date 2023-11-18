@@ -4,6 +4,7 @@ import getTodayTasks from '@/app/actions/getTodayTasks';
 import getTomorrowTasks from '@/app/actions/getTomorrowTasks';
 import getThisWeekTasks from '@/app/actions/getThisWeekTasks';
 import AddTaskButton from '@/app/components/buttons/AddTaskButton';
+import MobileMenuButton from '@/app/components/buttons/MobileMenuButton';
 
 const UpcomingPage = async () => {
   const todayTasks = await getTodayTasks();
@@ -12,8 +13,11 @@ const UpcomingPage = async () => {
 
   return (
     <div className='w-full h-full flex flex-col space-y-6'>
-      <section className='flex items-center justify-between'>
-        <h1 className='text-5xl my-4'>Upcoming</h1>
+      <section className='flex items-center text-3xl md:text-4xl lg:text-5xl justify-between'>
+        <div className='flex items-center'>
+          <MobileMenuButton />
+          <h1 className='my-4'>Sticky Wall</h1>
+        </div>
         <AddTaskButton />
       </section>
       <div className='overflow-auto flex flex-col space-y-6'>
