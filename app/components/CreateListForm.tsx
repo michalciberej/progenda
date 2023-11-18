@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ListData } from '@/typings';
-import { useForm } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 
 import clsx from 'clsx';
 import axios from 'axios';
@@ -26,7 +25,7 @@ const CreateListForm = ({
   isMenuOpened: boolean;
   toggleIsListFormOpened: () => void;
 }) => {
-  const [listData, setListData] = useState<ListData>({
+  const [listData, setListData] = useState<FieldValues>({
     title: '',
     color: '#f87171',
   });
@@ -47,10 +46,10 @@ const CreateListForm = ({
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={clsx(
-        'border-2 rounded-xl flex flex-col space-y-2 border-background_DM/50 p-3 dark:border-background_LM/20',
+        'border-2 rounded-xl flex flex-col space-y-2 border-background_DM/20 p-3 dark:border-background_LM/20',
         hiddenOrShown
       )}>
-      <div className='flex border-2 items-center px-2 rounded-lg dark:border-background_LM/10'>
+      <div className='flex border-2 items-center px-2 rounded-lg border-background_DM/10 dark:border-background_LM/10'>
         <div
           className='w-5 h-5 bg-white rounded-sm'
           style={{ backgroundColor: listData.color }}
@@ -63,7 +62,7 @@ const CreateListForm = ({
           onChange={(e) =>
             setListData({ ...listData, title: e.currentTarget.value })
           }
-          className='w-full bg-transparent py-1 px-2 '
+          className='w-full bg-transparent py-1 px-2 placeholder:text-text_LM/50 dark:placeholder:text-text_DM/50'
         />
       </div>
       <div className='flex justify-between items-center px-1'>
