@@ -9,9 +9,11 @@ const StyledButton: React.FC<StyledButtonProps> = ({
   fullWidth,
   disabled,
   func,
+  type
 }) => {
   return (
     <button
+      type={type}
       onClick={func}
       disabled={disabled}
       className={clsx(
