@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     },
   });
 
-  pusherServer.trigger('delete-note', 'note:delete', note);
+  await pusherServer.trigger('delete-note', 'note:delete', note);
 
   return NextResponse.json(note);
 }

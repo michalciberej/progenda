@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     },
   });
 
-  pusherServer.trigger('new-note', 'note:new', note);
+  await pusherServer.trigger('new-note', 'note:new', note);
 
   return NextResponse.json(note);
 }
