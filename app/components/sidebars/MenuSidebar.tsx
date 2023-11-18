@@ -25,20 +25,21 @@ const MenuSidebar = ({
     <aside
       className={clsx(
         `
-      hidden
-      lg:flex
       flex-col
       w-full
       h-full
+      max-h-full
       p-4
-      rounded-xl
+      lg:rounded-xl
       divide-y
       divide-background_DM/20
       dark:divide-background_LM/20
       bg-secondary_LM
       dark:bg-secondary_DM
       `,
-        isMenuOpened ? 'lg:w-80 min-w-[15rem]' : 'lg:w-14'
+        isMenuOpened
+          ? 'fixed z-50 inset-0 flex lg:static lg:w-80 lg:min-w-[15rem]'
+          : 'lg:w-14 hidden lg:flex'
       )}>
       <section>
         <div className='flex justify-between items-center pb-4'>

@@ -87,11 +87,13 @@ const TaskSidebar = ({ lists }: { lists: List[] }) => {
   return (
     <aside
       className={clsx(
-        'hidden flex-col w-full max-w-[30rem] bg-secondary_LM dark:bg-secondary_DM  rounded-xl p-4 placeholder:text-text_LM/70 dark:placeholder:text-text_DM/70',
-        isTaskOpened ? 'lg:flex' : 'lg:hidden'
+        'flex-col w-full flex bg-secondary_LM dark:bg-secondary_DM  lg:rounded-xl p-4 placeholder:text-text_LM/70 dark:placeholder:text-text_DM/70',
+        isTaskOpened
+          ? 'fixed lg:static z-40 inset-0 lg:max-w-[30rem]'
+          : 'hidden'
       )}>
-      <div className='w-full flex justify-between '>
-        <h1 className='text-2xl font-semibold mb-8'>
+      <div className='w-full flex justify-between items-center mb-8'>
+        <h1 className='text-2xl font-semibold'>
           {taskVariant === 'CREATE' ? 'Create Task' : 'Update Task'}
         </h1>
         <button
@@ -114,7 +116,7 @@ const TaskSidebar = ({ lists }: { lists: List[] }) => {
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='w-full flex flex-col justify-between h-full pb-4'>
+        className='w-full flex flex-col justify-between h-full'>
         <div className='flex flex-col space-y-4'>
           <input
             type='text'
@@ -159,41 +161,44 @@ const TaskSidebar = ({ lists }: { lists: List[] }) => {
             </select>
           </label>
         </div>
-        <StyledButton
-          disabled={isLoading}
-          primary
-          fullWidth>
-          {taskVariant === 'CREATE' ? 'Create' : 'Update'}
-        </StyledButton>
+        <div className={`${taskVariant === 'UPDATE' && 'space-y-2'}`}>
+          <StyledButton
+            disabled={isLoading}
+            primary
+            fullWidth>
+            {taskVariant === 'CREATE' ? 'Create' : 'Update'}
+          </StyledButton>
+          {taskVariant === 'UPDATE' && (
+            <StyledButton
+              func={() => {
+                console.log(taskToUpdate);
+                axios
+                  .post('/api/deleteTask', taskToUpdate)
+                  .then(() => {
+                    toast.success('Task deleted!');
+                    setIsTaskOpened(false);
+                    setTaskToUpdate({
+                      title: '',
+                      body: '',
+                      date: '',
+                      id: '',
+                      list: { title: '', color: '', id: '', userId: '' },
+                    });
+                    setTaskVariant('CREATE');
+                    reset();
+                  })
+                  .catch(() => toast.error('Something went wrong!'))
+                  .finally(() => setIsLoading(false));
+              }}
+              disabled={isLoading}
+              type='button'
+              accent
+              fullWidth>
+              Delete
+            </StyledButton>
+          )}
+        </div>
       </form>
-      {taskVariant === 'UPDATE' && (
-        <StyledButton
-          func={() => {
-            console.log(taskToUpdate);
-            axios
-              .post('/api/deleteTask', taskToUpdate)
-              .then(() => {
-                toast.success('Task deleted!');
-                setIsTaskOpened(false);
-                setTaskToUpdate({
-                  title: '',
-                  body: '',
-                  date: '',
-                  id: '',
-                  list: { title: '', color: '', id: '', userId: '' },
-                });
-                setTaskVariant('CREATE');
-                reset();
-              })
-              .catch(() => toast.error('Something went wrong!'))
-              .finally(() => setIsLoading(false));
-          }}
-          disabled={isLoading}
-          accent
-          fullWidth>
-          Delete
-        </StyledButton>
-      )}
     </aside>
   );
 };
