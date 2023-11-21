@@ -9,7 +9,7 @@ export default function Home() {
           <div className='hidden lg:block relative w-1/2 rounded-lg overflow-hidden'>
             <LandingImage src={'/landingpage-image.jpg'} />
           </div>
-          <div className='flex justify-center items-center w-full lg:w-1/2 rounded-lg border border-secondary'>
+          <div className='flex justify-center items-center w-full lg:w-1/2 rounded-lg border border-background_DM/10'>
             <div className='flex flex-col items-center justify-center max-w-md p-6 lg:p-4 space-y-20 lg:space-y-0'>
               <h1 className='block lg:hidden font-semibold text-4xl'>
                 Progenda

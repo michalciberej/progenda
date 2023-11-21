@@ -9,7 +9,7 @@ export default function SignInPage() {
           <div className='hidden lg:block relative w-1/2 rounded-lg overflow-hidden'>
             <LandingImage src={'/signinpage-image.png'} />
           </div>
-          <div className='flex flex-col justify-center items-center w-full lg:w-1/2 rounded-lg border border-secondary p-6 md:p-0 space-y-10 lg:space-y-0'>
+          <div className='flex flex-col justify-center items-center w-full lg:w-1/2 rounded-lg border border-background_DM/10 p-6 md:p-0 space-y-10 lg:space-y-0'>
             <h1 className='block lg:hidden font-semibold text-4xl m-8'>
               Progenda
             </h1>
