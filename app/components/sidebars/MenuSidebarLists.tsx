@@ -8,7 +8,9 @@ import { ListWithTaskCount, TaskWithList } from '@/typings';
 import { useSidebarContext } from '@/app/context/SidebarContext';
 import { pusherClient } from '@/app/lib/pusher';
 import { LuWrench } from 'react-icons/lu';
-import ListModal from '../modal/ListModal';
+import ListModal from '../modals/ListModal';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
   const { isMenuOpened, setIsMenuOpened } = useSidebarContext();
@@ -17,6 +19,7 @@ const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const hiddenOrShown = isMenuOpened ? 'block' : 'hidden';
   const center = isMenuOpened ? 'justify-between' : 'justify-center';
+  const pathname = usePathname().split('/').pop();
 
   const toggleIsListFormOpened = () => {
     setIsListFormOpened(!isListFormOpened);
@@ -111,23 +114,39 @@ const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
             <li
               key={index}
               className={clsx(
-                `flex items-center rounded-lg py-2 px-2`,
-                center
+                'rounded-lg py-2 px-2',
+                pathname === list.title && 'bg-background_DM/20'
               )}>
-              <div className='flex items-center space-x-2'>
-                <div
-                  className='w-5 h-5 rounded-sm'
-                  style={{ backgroundColor: list.color }}
-                />
-                <span className={hiddenOrShown}>{list.title}</span>
-              </div>
-              <span
+              <Link
+                href={list.title}
                 className={clsx(
-                  `py-1 px-2 rounded-md mr-1 tracking-tighter leading-snug bg-secondary_DM/20 dark:bg-secondary_LM/20`,
-                  hiddenOrShown
+                  `flex items-center`,
+                  center,
+                  pathname === list.title && 'font-semibold'
                 )}>
-                {list._count.task}
-              </span>
+                <div className='flex items-center space-x-2'>
+                  <div
+                    className={clsx(
+                      'w-5 h-5',
+                      pathname === list.title ? 'rounded-full' : 'rounded-sm'
+                    )}
+                    style={{ backgroundColor: list.color }}
+                  />
+                  <span className={hiddenOrShown}>
+                    {list.title.charAt(0).toUpperCase() + list.title.slice(1)}
+                  </span>
+                </div>
+                <span
+                  className={clsx(
+                    `py-1 px-2 rounded-md mr-1 tracking-tighter leading-snug`,
+                    pathname === list.title
+                      ? 'bg-secondary_LM dark:bg-secondary_LM/10'
+                      : 'bg-secondary_DM/20 dark:bg-secondary_LM/10',
+                    hiddenOrShown
+                  )}>
+                  {list._count.task}
+                </span>
+              </Link>
             </li>
           ))}
         </ul>
@@ -139,7 +158,7 @@ const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
             setIsMenuOpened(true);
           }}
           className={clsx(
-            ' rounded-lg px-2 py-1 mt-2 flex items-center text-xl',
+            ' rounded-lg px-2 py-1 mt-2 flex items-center text-xl text-text_DM/70',
             isMenuOpened ? 'space-x-2' : 'justify-center'
           )}>
           <AiOutlinePlus className='shrink-0' />

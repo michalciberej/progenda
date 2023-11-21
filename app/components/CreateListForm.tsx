@@ -34,7 +34,10 @@ const CreateListForm = ({
 
   const onSubmit = () => {
     axios
-      .post('/api/createList', listData)
+      .post('/api/createList', {
+        ...listData,
+        title: listData.title.toLowerCase(),
+      })
       .then(() => {
         toast.success('List created!');
         toggleIsListFormOpened();
@@ -46,10 +49,10 @@ const CreateListForm = ({
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={clsx(
-        'border-2 rounded-xl flex flex-col space-y-2 border-background_DM/20 p-3 dark:border-background_LM/20',
+        'border rounded-xl flex flex-col space-y-2 border-background_DM/20 p-3 dark:border-background_LM/20',
         hiddenOrShown
       )}>
-      <div className='flex border-2 items-center px-2 rounded-lg border-background_DM/10 dark:border-background_LM/10'>
+      <div className='flex border items-center px-2 rounded-lg border-background_DM/20 dark:border-background_LM/20'>
         <div
           className='w-5 h-5 bg-white rounded-sm'
           style={{ backgroundColor: listData.color }}
@@ -60,7 +63,10 @@ const CreateListForm = ({
           placeholder='List name'
           value={listData.title}
           onChange={(e) =>
-            setListData({ ...listData, title: e.currentTarget.value })
+            setListData({
+              ...listData,
+              title: e.currentTarget.value,
+            })
           }
           className='w-full bg-transparent py-1 px-2 placeholder:text-text_LM/50 dark:placeholder:text-text_DM/50'
         />
