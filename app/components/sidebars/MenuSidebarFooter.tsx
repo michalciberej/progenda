@@ -7,7 +7,7 @@ import { GoSun } from 'react-icons/go';
 import { signOut } from 'next-auth/react';
 import { User } from '@prisma/client';
 import { FaRegMoon } from 'react-icons/fa6';
-import SettingsModal from '../modal/SettingsModal';
+import SettingsModal from '../modals/SettingsModal';
 import { useState } from 'react';
 
 import Avatar from '../Avatar';

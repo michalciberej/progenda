@@ -75,6 +75,32 @@ const MobileSidebar = ({
             <li
               className={clsx(
                 `flex items-center rounded-lg py-2 px-2`,
+                pathname === 'today' && 'bg-background_DM/20',
+                center
+              )}>
+              <Link
+                href={'/user/today'}
+                aria-label='Today'
+                className={`flex items-center gap-2 ${
+                  pathname === 'today' && 'font-semibold'
+                }`}>
+                <BsListCheck className='text-xl' />
+                <span className={hiddenOrShown}>Today</span>
+              </Link>
+              <span
+                className={clsx(
+                  `py-1 px-2 rounded-md mr-1 tracking-tighter leading-snug`,
+                  pathname === 'today'
+                    ? 'bg-secondary_LM dark:bg-secondary_LM/10'
+                    : 'bg-secondary_DM/20 dark:bg-secondary_LM/10',
+                  hiddenOrShown
+                )}>
+                {todayTasks?.length}
+              </span>
+            </li>
+            <li
+              className={clsx(
+                `flex items-center rounded-lg py-2 px-2`,
                 pathname === 'upcoming' &&
                   'bg-background_DM/20 dark:bg-background_DM/40',
                 center
@@ -92,37 +118,11 @@ const MobileSidebar = ({
                 className={clsx(
                   `py-1 px-2 rounded-md mr-1 tracking-tighter leading-snug`,
                   pathname === 'upcoming'
-                    ? 'bg-secondary_LM dark:bg-secondary_DM'
-                    : 'bg-secondary_DM/20 dark:bg-secondary_LM/20',
+                    ? 'bg-secondary_LM dark:bg-secondary_LM/10'
+                    : 'bg-secondary_DM/20 dark:bg-secondary_LM/10',
                   hiddenOrShown
                 )}>
                 {upcomingTasks.length}
-              </span>
-            </li>
-            <li
-              className={clsx(
-                `flex items-center rounded-lg py-2 px-2`,
-                pathname === 'today' && 'bg-background_DM/20',
-                center
-              )}>
-              <Link
-                href={'/user/today'}
-                aria-label='Today'
-                className={`flex items-center gap-2 ${
-                  pathname === 'today' && 'font-semibold'
-                }`}>
-                <BsListCheck className='text-xl' />
-                <span className={hiddenOrShown}>Today</span>
-              </Link>
-              <span
-                className={clsx(
-                  `py-1 px-2 rounded-md mr-1 tracking-tighter leading-snug`,
-                  pathname === 'today'
-                    ? 'bg-secondary_LM dark:bg-secondary_DM'
-                    : 'bg-secondary_DM/20 dark:bg-secondary_LM/20',
-                  hiddenOrShown
-                )}>
-                {todayTasks?.length}
               </span>
             </li>
             <li
