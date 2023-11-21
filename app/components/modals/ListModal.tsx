@@ -37,20 +37,24 @@ const ListModal: React.FC<ListModalProps> = ({ isOpen, onClose, lists }) => {
               '>
           Lists
         </h2>
-        {lists.map((list, index) => (
-          <div
-            key={index}
-            className='text-text_LM dark:text-text_DM px-2 py-1 text-lg rounded-md flex items-center justify-between'
-            style={{ backgroundColor: list.color }}>
-            <span>{list.title}</span>
-            <button
-              type='button'
-              aria-label='Delete list'
-              onClick={() => listDeleteHandle(list.id)}>
-              <IoClose />
-            </button>
-          </div>
-        ))}
+        <ul className='flex w-full flex-col space-y-2'>
+          {lists.map((list, index) => (
+            <li
+              key={index}
+              className='text-text_LM dark:text-text_DM px-2 py-1 text-lg rounded-md flex items-center justify-between'
+              style={{ backgroundColor: list.color }}>
+              <span>
+                {list.title.charAt(0).toUpperCase() + list.title.slice(1)}
+              </span>
+              <button
+                type='button'
+                aria-label='Delete list'
+                onClick={() => listDeleteHandle(list.id)}>
+                <IoClose />
+              </button>
+            </li>
+          ))}
+        </ul>
         <p className='mt-4 text-center'>
           Warning: Deleting list will also delete all related tasks!
         </p>
