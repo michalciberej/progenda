@@ -1,4 +1,7 @@
 import { Day } from '@/typings';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { IoClose } from 'react-icons/io5';
 
 const DayCard = ({ day }: { day: Day }) => {
   return (
@@ -8,9 +11,20 @@ const DayCard = ({ day }: { day: Day }) => {
         {day.tasks.map((task) => (
           <li
             key={task.id}
-            className='rounded-md px-2 text-text_LM truncate'
+            className='rounded-md px-2 flex items-center justify-between text-text_LM truncate'
             style={{ backgroundColor: task.list?.color }}>
-            {task.title}
+            <span>{task.title}</span>
+            <button
+              onClick={() =>
+                axios
+                  .post('/api/deleteTask', task)
+                  .then(() => toast.success('Task deleted!'))
+                  .catch(() => toast.error('Something went wrong!'))
+              }
+              type='button'
+              aria-label='Delete task'>
+              <IoClose />
+            </button>
           </li>
         ))}
       </ul>

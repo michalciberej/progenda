@@ -6,6 +6,7 @@ import { TaskWithList } from '@/typings';
 import { useEffect, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import DayCard from './DayCard';
+import { pusherClient } from '@/app/lib/pusher';
 
 const CalendarContainer = ({ tasks }: { tasks: TaskWithList[] }) => {
   const { monthNumber, year } = getCurrentDate();
@@ -16,6 +17,25 @@ const CalendarContainer = ({ tasks }: { tasks: TaskWithList[] }) => {
   useEffect(() => {
     setYearData(getYearData(currentYear, tasks));
   }, [currentYear, tasks]);
+
+  useEffect(() => {
+    pusherClient.subscribe('delete-task');
+
+    const taskHandler = (oldTask: TaskWithList) => {
+      setYearData(
+        getYearData(
+          currentYear,
+          tasks.filter((task) => task.id !== oldTask.id)
+        )
+      );
+    };
+
+    pusherClient.bind('task:delete', taskHandler);
+    return () => {
+      pusherClient.unsubscribe('delete-task');
+      pusherClient.unbind('task:delete', taskHandler);
+    };
+  }, [yearData, currentYear, tasks]);
 
   return (
     <section className='overflow-auto'>
