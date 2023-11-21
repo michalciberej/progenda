@@ -62,7 +62,7 @@ model Task {
 
 model List {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  title String
+  title String @unique
   color String
 
   userId String @db.ObjectId
