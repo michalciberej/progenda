@@ -1,4 +1,3 @@
-import React from 'react';
 import TaskContainer from '@/app/components/TaskContainer';
 import getTodayTasks from '@/app/actions/getTodayTasks';
 import getTomorrowTasks from '@/app/actions/getTomorrowTasks';
@@ -16,7 +15,7 @@ const UpcomingPage = async () => {
       <section className='flex items-center text-3xl md:text-4xl lg:text-5xl justify-between'>
         <div className='flex items-center'>
           <MobileMenuButton />
-          <h1 className='my-4'>Sticky Wall</h1>
+          <h1 className='my-4'>Upcoming</h1>
         </div>
         <AddTaskButton />
       </section>
