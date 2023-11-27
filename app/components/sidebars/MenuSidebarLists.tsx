@@ -158,7 +158,7 @@ const MenuSidebarLists = ({ lists }: { lists: ListWithTaskCount[] }) => {
             setIsMenuOpened(true);
           }}
           className={clsx(
-            ' rounded-lg px-2 py-1 mt-2 flex items-center text-xl text-text_DM/70',
+            ' rounded-lg px-2 py-1 mt-2 flex items-center text-xl text-text_LM/70 dark:text-text_DM/70',
             isMenuOpened ? 'space-x-2' : 'justify-center'
           )}>
           <AiOutlinePlus className='shrink-0' />
